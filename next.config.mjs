@@ -1,8 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: process.env.NODE_ENV === "production",
-  },
-};
+const nextConfig = {};
 
-module.exports = nextConfig;
+export default nextConfig;
