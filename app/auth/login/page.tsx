@@ -13,17 +13,31 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, isLoading } = useAuth();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí iría la lógica de autenticación
-    console.log("Login attempt", { email, password });
-    // Si la autenticación es exitosa, redirige al dashboard
-    // router.push('/dashboard')
+    try {
+      await login({ email, password });
+      toast({
+        title: "Login exitoso",
+        description: "Has iniciado sesión correctamente.",
+      });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast({
+        title: "Error de inicio de sesión",
+        description: "Email o contraseña incorrectos.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -63,8 +77,12 @@ export default function Login() {
           </form>
         </CardContent>
         <CardFooter className="flex flex-col">
-          <Button className="w-full" onClick={handleSubmit}>
-            Iniciar Sesión
+          <Button
+            className="w-full"
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
           </Button>
           <div className="mt-4 text-sm text-center">
             <Link
