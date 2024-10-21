@@ -15,8 +15,10 @@ import {
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, isLoading } = useAuth();
@@ -30,6 +32,7 @@ export default function Login() {
         title: "Login exitoso",
         description: "Has iniciado sesión correctamente.",
       });
+      router.push("/dashboard");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast({

@@ -26,9 +26,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const router = useRouter();
 
   useEffect(() => {
-    const user = authService.getCurrentUser();
-    setUser(user);
-    setIsLoading(false);
+    const initAuth = async () => {
+      try {
+        const currentUser = authService.getCurrentUser();
+        if (currentUser) {
+          setUser(currentUser);
+        }
+      } catch (error) {
+        console.error("Error initializing auth:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    initAuth();
   }, []);
 
   const login = async (credentials: LoginCredentials) => {
@@ -38,7 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(user);
       router.push("/dashboard");
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Login error:", error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -52,7 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(user);
       router.push("/dashboard");
     } catch (error) {
-      console.error("Registration failed:", error);
+      console.error("Registration error:", error);
       throw error;
     } finally {
       setIsLoading(false);

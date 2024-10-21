@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function ProtectedLayout({
   children,
@@ -11,9 +12,7 @@ export default function ProtectedLayout({
   const router = useRouter();
 
   useEffect(() => {
-    // Aquí verificarías si el usuario está autenticado
-    // Por ejemplo, comprobando si existe un token en localStorage
-    const token = localStorage.getItem("auth_token");
+    const token = Cookies.get("auth_token");
     if (!token) {
       router.push("/auth/login");
     }
