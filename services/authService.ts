@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -15,6 +16,7 @@ export interface RegisterCredentials extends LoginCredentials {
 export interface User {
   id: string;
   name: string;
+  lastname: string;
   email: string;
 }
 
@@ -22,7 +24,15 @@ const authService = {
   async login(credentials: LoginCredentials): Promise<User> {
     const response = await axios.post(`${API_URL}/user/login`, credentials);
     if (response.data.token) {
-      localStorage.setItem("user", JSON.stringify(response.data));
+      const user: User = {
+        id: response.data.id,
+        name: response.data.name,
+        lastname: response.data.lastname,
+        email: response.data.email,
+      };
+      // Guardar token y user en cookies
+      Cookies.set("auth_token", response.data.token, { expires: 7 });
+      Cookies.set("user", JSON.stringify(user), { expires: 7 });
     }
     return response.data.user;
   },
@@ -30,29 +40,37 @@ const authService = {
   async register(credentials: RegisterCredentials): Promise<User> {
     const response = await axios.post(`${API_URL}/user/register`, credentials);
     if (response.data.token) {
-      localStorage.setItem("user", JSON.stringify(response.data));
+      const user: User = {
+        id: response.data.id,
+        name: response.data.name,
+        lastname: response.data.lastname,
+        email: response.data.email,
+      };
+      // Guardar token y user en cookies
+      Cookies.set("auth_token", response.data.token, { expires: 7 });
+      Cookies.set("user", JSON.stringify(user), { expires: 7 });
     }
     return response.data.user;
   },
 
   logout() {
-    localStorage.removeItem("user");
+    // Eliminar token y user de las cookies
+    Cookies.remove("auth_token");
+    Cookies.remove("user");
   },
 
   getCurrentUser(): User | null {
-    const userStr = localStorage.getItem("user");
+    // Obtener el usuario de las cookies
+    const userStr = Cookies.get("user");
     if (userStr) {
-      return JSON.parse(userStr).user;
+      return JSON.parse(userStr);
     }
     return null;
   },
 
   getToken(): string | null {
-    const userStr = localStorage.getItem("user");
-    if (userStr) {
-      return JSON.parse(userStr).token;
-    }
-    return null;
+    // Obtener el token de las cookies
+    return Cookies.get("auth_token") || null;
   },
 };
 
