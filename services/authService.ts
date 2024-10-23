@@ -30,7 +30,6 @@ const authService = {
         lastname: response.data.lastname,
         email: response.data.email,
       };
-      // Guardar token y user en cookies
       Cookies.set("auth_token", response.data.token, { expires: 7 });
       Cookies.set("user", JSON.stringify(user), { expires: 7 });
     }
@@ -46,7 +45,6 @@ const authService = {
         lastname: response.data.lastname,
         email: response.data.email,
       };
-      // Guardar token y user en cookies
       Cookies.set("auth_token", response.data.token, { expires: 7 });
       Cookies.set("user", JSON.stringify(user), { expires: 7 });
     }
@@ -54,13 +52,11 @@ const authService = {
   },
 
   logout() {
-    // Eliminar token y user de las cookies
     Cookies.remove("auth_token");
     Cookies.remove("user");
   },
 
   getCurrentUser(): User | null {
-    // Obtener el usuario de las cookies
     const userStr = Cookies.get("user");
     if (userStr) {
       return JSON.parse(userStr);
@@ -69,7 +65,6 @@ const authService = {
   },
 
   getToken(): string | null {
-    // Obtener el token de las cookies
     return Cookies.get("auth_token") || null;
   },
 };
