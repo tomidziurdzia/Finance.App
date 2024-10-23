@@ -46,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const user = await authService.login(credentials);
       setUser(user);
-      router.push("/dashboard");
+      router.push("/home");
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -60,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const user = await authService.register(credentials);
       setUser(user);
-      router.push("/dashboard");
+      router.push("/home");
     } catch (error) {
       console.error("Registration error:", error);
       throw error;

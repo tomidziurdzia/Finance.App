@@ -32,7 +32,7 @@ export default function Login() {
         title: "Login exitoso",
         description: "Has iniciado sesión correctamente.",
       });
-      router.push("/dashboard");
+      router.push("/home");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast({
