@@ -1,13 +1,14 @@
-import { GlobeIcon, Wallet, WalletIcon } from "lucide-react";
+import { Home, WalletIcon } from "lucide-react";
 import Link from "next/link";
-import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import walletService from "@/services/walletService";
 import { Wallets } from "@/interfaces/walletInterface";
-import ThemeToggle from "../ThemeToggle/ThemeToggle";
+import { usePathname } from "next/navigation";
 
 const Sidebar = () => {
   const [wallets, setWallets] = useState<Wallets>();
+  const pathname = usePathname();
+
   useEffect(() => {
     const fetchWallets = async () => {
       try {
@@ -21,45 +22,46 @@ const Sidebar = () => {
     fetchWallets();
   }, []);
 
-  console.log(wallets);
-
   return (
-    <div className="hidden lg:block lg:w-64 lg:shrink-0 lg:border-r lg:bg-primary dark:lg:bg-gray-800">
+    <div className="hidden lg:block lg:w-64 lg:shrink-0 bg-[#FAFAFA] text-[#1B212D] dark:lg:bg-gray-800">
       <div className="flex h-full flex-col justify-between py-6 px-4">
-        <ThemeToggle />
         <div className="space-y-6">
           <Link
             href="/home"
-            className="flex items-center gap-2 font-bold"
+            className="flex items-center gap-2 font-bold justify-center text-2xl"
             prefetch={false}
           >
-            <Wallet className="h-6 w-6" />
-            <span className="text-lg">Finance App</span>
+            <span>Finance App</span>
           </Link>
-          <nav className="space-y-1">
+          <nav className="space-y-1 text-[#929EAE]">
+            <Link
+              href={`/home`}
+              className={`flex items-center gap-2 rounded-md p-3 text-sm font-semibold hover:bg-primary hover:opacity-80 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50 ${
+                pathname === `/home`
+                  ? "bg-primary text-black dark:bg-gray-700 dark:text-white"
+                  : ""
+              }`}
+              prefetch={false}
+            >
+              <Home />
+              <span>Dashboard</span>
+            </Link>
             {wallets?.wallets?.map((wallet) => (
               <Link
                 key={wallet.id}
                 href={`/wallets/${wallet.id}`}
-                className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-200 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50"
+                className={`flex items-center gap-2 rounded-md p-3 text-sm font-semibold hover:bg-primary hover:opacity-80 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50 ${
+                  pathname === `/wallets/${wallet.id}`
+                    ? "bg-primary text-black dark:bg-gray-700 dark:text-white"
+                    : ""
+                }`}
                 prefetch={false}
               >
                 <WalletIcon className="h-5 w-5" />
                 <span>{wallet.name}</span>
-                {wallet.currency}
-                <span>{wallet.total}</span>
               </Link>
             ))}
           </nav>
-        </div>
-        <div className="space-y-4">
-          <Button variant="outline" size="sm" className="w-full">
-            Upgrade to Pro
-          </Button>
-          <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-            <GlobeIcon className="h-5 w-5" />
-            <span>English</span>
-          </div>
         </div>
       </div>
     </div>
