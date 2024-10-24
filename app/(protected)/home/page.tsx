@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { ArrowDownIcon, ArrowUpIcon, WalletIcon } from "lucide-react";
 
@@ -27,59 +26,65 @@ const incomeVsExpenses = [
 
 export default function Home() {
   const totalBalance = wallets.reduce((sum, wallet) => sum + wallet.balance, 0);
-  const totalExpenses = expenses.reduce(
-    (sum, expense) => sum + expense.amount,
-    0
-  );
+
   const totalIncome =
     incomeVsExpenses.find((item) => item.name === "Ingresos")?.value || 0;
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Home</h1>
+      <h1 className="text-3xl font-bold mb-6 text-[#1B212D]">Dashboard</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Balance Total</CardTitle>
-            <WalletIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${totalBalance.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground">Across all wallets</p>
-          </CardContent>
+        <Card className="bg-[#363A3F] flex p-4 items-center justify-center">
+          <div className="bg-[#4E5257] border-[#4E5257] w-14 h-14 flex justify-center items-center rounded-full border-[14px]">
+            <WalletIcon className="h-5 w-5 text-primary" strokeWidth={2} />
+          </div>
+          <div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-[#929EAE]">
+                Total Balance
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-white">
+                ${totalBalance.toFixed(2)}
+              </div>
+            </CardContent>
+          </div>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Ingresos del Mes
-            </CardTitle>
-            <ArrowUpIcon className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${totalIncome.toFixed(2)}</div>
-            <Progress
-              value={(totalIncome / (totalIncome + totalExpenses)) * 100}
-              className="mt-2"
-            />
-          </CardContent>
+        <Card className="flex p-4 items-center justify-center">
+          <div className="bg-[#4E5257] border-[#4E5257] w-14 h-14 flex justify-center items-center rounded-full border-[14px]">
+            <ArrowUpIcon className="h-5 w-5 text-primary" strokeWidth={4} />
+          </div>
+          <div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-[#929EAE]">
+                Ingresos del Mes
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                ${totalIncome.toFixed(2)}
+              </div>
+            </CardContent>
+          </div>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Gastos del Mes
-            </CardTitle>
-            <ArrowDownIcon className="h-4 w-4 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${totalExpenses.toFixed(2)}
-            </div>
-            <Progress
-              value={(totalExpenses / totalIncome) * 100}
-              className="mt-2"
-            />
-          </CardContent>
+        <Card className="flex p-4 items-center justify-center">
+          <div className="bg-[#4E5257] border-[#4E5257] w-14 h-14 flex justify-center items-center rounded-full border-[14px]">
+            <ArrowDownIcon className="h-5 w-5 text-red-400" strokeWidth={4} />
+          </div>
+          <div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-[#929EAE]">
+                Ingresos del Mes
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                ${totalIncome.toFixed(2)}
+              </div>
+            </CardContent>
+          </div>
         </Card>
       </div>
 
