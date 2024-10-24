@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import walletService from "@/services/walletService";
 import { Wallets } from "@/interfaces/walletInterface";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 const Sidebar = () => {
   const [wallets, setWallets] = useState<Wallets>();
@@ -25,6 +26,7 @@ const Sidebar = () => {
   return (
     <div className="hidden lg:block lg:w-64 lg:shrink-0 lg:border-r lg:bg-primary dark:lg:bg-gray-800">
       <div className="flex h-full flex-col justify-between py-6 px-4">
+        <ThemeToggle />
         <div className="space-y-6">
           <Link
             href="/home"

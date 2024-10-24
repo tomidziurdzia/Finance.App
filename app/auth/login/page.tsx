@@ -16,6 +16,8 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Loading from "@/components/Loading/Loading";
 
 export default function Login() {
   const router = useRouter();
@@ -23,89 +25,103 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const { login, isLoading } = useAuth();
   const { toast } = useToast();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await login({ email, password });
       toast({
-        title: "Login exitoso",
-        description: "Has iniciado sesión correctamente.",
+        title: "Successful login",
+        description: "You have successfully logged in.",
       });
+      setIsRedirecting(true); // Set the redirecting state
       router.push("/home");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast({
-        title: "Error de inicio de sesión",
-        description: "Email o contraseña incorrectos.",
+        title: "Login error",
+        description: "Incorrect email or password.",
         variant: "destructive",
       });
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle>Iniciar Sesión</CardTitle>
-          <CardDescription>
-            Ingresa tus credenciales para acceder
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit}>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="tu@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="password">Contraseña</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
+    <>
+      {isLoading || isRedirecting ? (
+        <Loading />
+      ) : (
+        <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4 lg:p-0">
+          <div className="flex w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
+            <Card className="w-full md:w-1/2 rounded-none border-none p-8 lg:p-12 flex flex-col justify-center dark:bg-dark">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-bold">
+                  Welcome back
+                </CardTitle>
+                <CardDescription>
+                  Welcome back! Please enter your details
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="border border-gray-500 text-gray-800"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="********"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="border border-gray-500 text-gray-800"
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    className="w-full dark:bg-primary text-gray-800"
+                    disabled={isLoading}
+                  >
+                    Sign in
+                  </Button>
+                </form>
+              </CardContent>
+              <CardFooter className="mx-auto">
+                <p className="text-sm text-secondary text-center">
+                  Don’t have an account?{" "}
+                  <Link
+                    href="/auth/register"
+                    className="font-medium text-gray-700 inline-block"
+                  >
+                    Sign up for free
+                  </Link>
+                </p>
+              </CardFooter>
+            </Card>
+            <div className="hidden md:block md:w-1/2">
+              <Image
+                src="/Image.png"
+                width={675}
+                height={900}
+                alt="Login image"
+                className="h-full w-full object-cover"
+              />
             </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex flex-col">
-          <Button
-            className="w-full"
-            onClick={handleSubmit}
-            disabled={isLoading}
-          >
-            {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
-          </Button>
-          <div className="mt-4 text-sm text-center">
-            <Link
-              href="/auth/forgot-password"
-              className="text-blue-500 hover:underline"
-            >
-              ¿Olvidaste tu contraseña?
-            </Link>
           </div>
-          <div className="mt-2 text-sm text-center">
-            ¿No tienes una cuenta?{" "}
-            <Link
-              href="/auth/register"
-              className="text-blue-500 hover:underline"
-            >
-              Regístrate
-            </Link>
-          </div>
-        </CardFooter>
-      </Card>
-    </div>
+        </div>
+      )}
+    </>
   );
 }
