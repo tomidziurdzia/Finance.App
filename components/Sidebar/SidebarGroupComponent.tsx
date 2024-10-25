@@ -2,13 +2,14 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 interface SidebarGroupComponentProps {
-  items: Array<{ id: string; name: string }>;
+  items: Array<{ id: string; name: string; currency?: string }>;
   basePath: string;
 }
 
@@ -33,7 +34,12 @@ const SidebarGroupComponent: React.FC<SidebarGroupComponentProps> = ({
                   "bg-primary text-primary-foreground dark:bg-gray-700 dark:text-white"
               )}
             >
-              {item.name}
+              <div className="flex justify-between w-full items-center">
+                <p>{item.name}</p>
+                <SidebarGroupLabel className="text-xs">
+                  {item.currency}
+                </SidebarGroupLabel>
+              </div>
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>

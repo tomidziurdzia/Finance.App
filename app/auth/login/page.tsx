@@ -35,7 +35,7 @@ export default function Login() {
         title: "Successful login",
         description: "You have successfully logged in.",
       });
-      setIsRedirecting(true); // Set the redirecting state
+      setIsRedirecting(true);
       router.push("/home");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
