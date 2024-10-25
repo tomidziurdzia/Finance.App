@@ -9,6 +9,11 @@ const walletService = {
 
     return response.data;
   },
+
+  async getTotals() {
+    const response = await api.get(`${API_URL}/wallets/totals`);
+    return response.data;
+  },
 };
 
 export default walletService;

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import Header from "@/components/Header/Header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export default function ProtectedLayout({
   children,
@@ -21,12 +22,14 @@ export default function ProtectedLayout({
   }, [router]);
 
   return (
-    <div className="flex h-screen w-full">
-      <Sidebar />
-      <div className="flex-1">
-        <Header />
-        {children}
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+        <Sidebar />
+        <SidebarInset>
+          <Header />
+          {children}
+        </SidebarInset>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }
