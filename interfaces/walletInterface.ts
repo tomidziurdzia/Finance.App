@@ -10,6 +10,14 @@ export interface Wallets {
   total: number;
 }
 
+export interface TotalWallets {
+  wallets: {
+    id: string;
+    total: number;
+  };
+  total: number;
+}
+
 export interface WalletApiEndpoints {
   getWallets: () => Promise<Wallets>;
   getWalletById: (id: string) => Promise<Wallet>;

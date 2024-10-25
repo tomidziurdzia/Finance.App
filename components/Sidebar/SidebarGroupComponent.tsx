@@ -1,0 +1,45 @@
+import {
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+} from "@/components/ui/sidebar";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+
+interface SidebarGroupComponentProps {
+  items: Array<{ id: string; name: string }>;
+  basePath: string;
+}
+
+const SidebarGroupComponent: React.FC<SidebarGroupComponentProps> = ({
+  items,
+  basePath,
+}) => {
+  const pathname = usePathname();
+
+  return (
+    <SidebarMenu>
+      {items.map((item) => (
+        <SidebarMenuItem key={item.id}>
+          <SidebarMenuButton asChild>
+            <Link
+              href={`${basePath}/${item.id}`}
+              className={cn(
+                "flex items-center gap-2 rounded-md p-3 text-sm font-semibold",
+                "hover:bg-primary/80 hover:text-primary-foreground",
+                "dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-50",
+                pathname === `${basePath}/${item.id}` &&
+                  "bg-primary text-primary-foreground dark:bg-gray-700 dark:text-white"
+              )}
+            >
+              {item.name}
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
+  );
+};
+
+export default SidebarGroupComponent;
