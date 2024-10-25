@@ -1,8 +1,13 @@
+import { Transaction } from "./transactionInterface";
+
 export interface Wallet {
   id: string;
   name: string;
   currency: string;
   total: number;
+  transactions: Transaction[];
+  income: number;
+  expense: number;
 }
 
 export interface Wallets {
@@ -16,6 +21,8 @@ export interface TotalWallets {
     total: number;
   };
   total: number;
+  income: number;
+  expense: number;
 }
 
 export interface WalletApiEndpoints {
