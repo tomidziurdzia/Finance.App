@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownIcon, ArrowUpIcon, WalletIcon } from "lucide-react";
 import walletService from "@/services/walletService";
 import { TotalWallets } from "@/interfaces/walletInterface";
-import TransactionForm from "@/components/Transaction/TransactionForm";
 
 export default function Home() {
   const [wallets, setWallets] = useState<TotalWallets>();
@@ -78,7 +77,6 @@ export default function Home() {
           </Card>
         </div>
       </div>
-      <TransactionForm />
     </>
   );
 }
