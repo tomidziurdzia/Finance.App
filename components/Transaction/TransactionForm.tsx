@@ -33,16 +33,26 @@ import categoryService from "@/services/categoryService";
 import walletService from "@/services/walletService";
 import { Wallets } from "@/interfaces/walletInterface";
 import transactionService from "@/services/transactionService";
+import {
+  Transaction,
+  TransactionType,
+} from "@/interfaces/transactionInterface";
 
-const typeOptions = Object.entries(CategoryType)
-  .filter(([, value]) => value !== CategoryType.Other)
-  .map(([, value]) => ({
-    label: value,
-    value: value,
+interface TransactionDialogProps {
+  onTransactionAdded: (newTransaction: Transaction) => void;
+}
+
+// Opciones para el tipo de transacción
+const typeOptions = Object.entries(TransactionType)
+  .filter(([, value]) => typeof value === "number")
+  .map(([label, value]) => ({
+    label,
+    value: value.toString(),
   }));
 
+// Esquema de validación de formulario
 const formSchema = z.object({
-  categoryId: z.string(), // Cambiar a categoryId
+  categoryId: z.string().min(1, { message: "Category is required." }),
   description: z.string().min(2, {
     message: "Description must be at least 2 characters.",
   }),
@@ -55,14 +65,18 @@ const formSchema = z.object({
     }),
   ]),
   type: z.string().min(1, { message: "Type is required." }),
-  walletId: z.string().min(1, { message: "Wallet is required." }), // Cambiar a walletId
+  walletId: z.string().min(1, { message: "Wallet is required." }),
 });
 
-const TransactionDialog = () => {
+const TransactionDialog: React.FC<TransactionDialogProps> = ({
+  onTransactionAdded,
+}) => {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [wallets, setWallets] = useState<Wallets>();
-  const [selectedType, setSelectedType] = useState<string>(CategoryType.Other);
+  const [selectedType, setSelectedType] = useState<TransactionType | null>(
+    null
+  );
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -74,40 +88,22 @@ const TransactionDialog = () => {
         ]);
         setWallets(dataWallets);
         setCategories(dataCategories);
-      } catch (error: unknown) {
+      } catch (error) {
         console.log(error);
       }
     };
-
     fetchData();
   }, []);
-
-  const getTransactionTypeValue = (type: CategoryType): number => {
-    switch (type) {
-      case CategoryType.Other:
-        return 0;
-      case CategoryType.Income:
-        return 1;
-      case CategoryType.Expense:
-        return 2;
-      case CategoryType.Investment:
-        return 3;
-      case CategoryType.Transfer:
-        return 4;
-      default:
-        throw new Error(`Unknown transaction type: ${type}`);
-    }
-  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       description: "",
-      amount: "",
       categoryId: "",
       type: "",
-      wallet: "",
-    } as Partial<z.infer<typeof formSchema>>,
+      walletId: "",
+      amount: "",
+    },
   });
 
   const handleClose = (isOpen: boolean) => {
@@ -122,7 +118,7 @@ const TransactionDialog = () => {
     const transactionData = {
       ...values,
       amount: Number(values.amount),
-      type: getTransactionTypeValue(values.type as CategoryType),
+      type: Number(values.type),
     };
 
     const selectedWallet = wallets?.wallets.find(
@@ -134,15 +130,13 @@ const TransactionDialog = () => {
       return;
     }
 
-    const isBalanceCheckRequired =
-      transactionData.type === getTransactionTypeValue(CategoryType.Expense) ||
-      transactionData.type === getTransactionTypeValue(CategoryType.Transfer) ||
-      transactionData.type === getTransactionTypeValue(CategoryType.Investment);
+    const requiresBalanceCheck = [
+      TransactionType.Expense,
+      TransactionType.Transfer,
+      TransactionType.Investment,
+    ].includes(Number(transactionData.type));
 
-    if (
-      isBalanceCheckRequired &&
-      selectedWallet.total < transactionData.amount
-    ) {
+    if (requiresBalanceCheck && selectedWallet.total < transactionData.amount) {
       setAlertMessage(
         `Insufficient funds. Your wallet balance is ${selectedWallet.total} ${selectedWallet.currency}.`
       );
@@ -150,7 +144,10 @@ const TransactionDialog = () => {
     }
 
     try {
-      await transactionService.createTransaction(transactionData);
+      const newTransaction = await transactionService.createTransaction(
+        transactionData
+      );
+      onTransactionAdded(newTransaction);
       setOpen(false);
       form.reset();
       setAlertMessage(null);
@@ -162,9 +159,12 @@ const TransactionDialog = () => {
     }
   }
 
-  const filteredCategories = categories.filter(
-    (category) => category.type === selectedType
-  );
+  const filteredCategories = selectedType
+    ? categories.filter(
+        (category) =>
+          category.type === (selectedType as unknown as CategoryType)
+      )
+    : categories;
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -222,7 +222,9 @@ const TransactionDialog = () => {
                     <Select
                       onValueChange={(value) => {
                         field.onChange(value);
-                        setSelectedType(value); // Actualizar el tipo seleccionado
+                        setSelectedType(
+                          TransactionType[value as keyof typeof TransactionType]
+                        );
                       }}
                       defaultValue={field.value}
                     >
@@ -295,7 +297,7 @@ const TransactionDialog = () => {
                     >
                       <SelectTrigger>
                         {filteredCategories.find(
-                          (category) => category.id === field.value
+                          (cat) => cat.id === field.value
                         )?.name || "Select category"}
                       </SelectTrigger>
                       <SelectContent>

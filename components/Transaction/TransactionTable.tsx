@@ -25,22 +25,25 @@ const TransactionTable: React.FC<TransactionTable> = ({
           <TableHead>Description</TableHead>
           <TableHead className="text-center">Category</TableHead>
           <TableHead>Amount</TableHead>
+          <TableHead>Type</TableHead>
           <TableHead className="text-center">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {transactions.map((transaction) => {
+          console.log(transaction);
           const date = new Date(transaction.createdAt);
           return (
             <TableRow key={transaction.id}>
               <TableCell>{date.toLocaleDateString()}</TableCell>
               <TableCell>{transaction.description}</TableCell>
               <TableCell>
-                {transaction.category || <p className="text-center">-</p>}
+                {transaction.categoryName || <p className="text-center">-</p>}
               </TableCell>
               <TableCell>
                 {transaction.amount} {currency}
               </TableCell>
+              <TableCell>{transaction.type}</TableCell>
             </TableRow>
           );
         })}

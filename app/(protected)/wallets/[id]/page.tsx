@@ -8,6 +8,10 @@ import TransactionTable from "@/components/Transaction/TransactionTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownIcon, ArrowUpIcon, WalletIcon } from "lucide-react";
 import TransactionForm from "@/components/Transaction/TransactionForm";
+import {
+  Transaction,
+  TransactionType,
+} from "@/interfaces/transactionInterface";
 
 const Wallet = () => {
   const id = usePathname().split("/").pop();
@@ -26,6 +30,46 @@ const Wallet = () => {
       fetchWallet();
     }
   }, [id]);
+
+  const mapTransactionType = (type: string | number): number => {
+    if (typeof type === "number") return type;
+    return TransactionType[type as keyof typeof TransactionType];
+  };
+
+  const onTransactionAdded = (newTransaction: Transaction) => {
+    setWallet((prevWallet) => {
+      if (!prevWallet) return prevWallet;
+
+      const updatedTransactions = [newTransaction, ...prevWallet.transactions];
+
+      const newTotalBalance = updatedTransactions.reduce(
+        (acc, transaction) => acc + transaction.amount,
+        0
+      );
+
+      const newTotalIncome = updatedTransactions
+        .filter(
+          (transaction) =>
+            mapTransactionType(transaction.type) === TransactionType.Income
+        )
+        .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+      const newTotalExpense = updatedTransactions
+        .filter(
+          (transaction) =>
+            mapTransactionType(transaction.type) === TransactionType.Expense
+        )
+        .reduce((acc, transaction) => acc + Math.abs(transaction.amount), 0);
+
+      return {
+        ...prevWallet,
+        transactions: updatedTransactions,
+        total: newTotalBalance,
+        income: newTotalIncome,
+        expense: newTotalExpense,
+      };
+    });
+  };
 
   const totalIncome = wallet?.income || "0";
   const totalExpense = wallet?.expense || "0";
@@ -95,7 +139,7 @@ const Wallet = () => {
           <p>Loading wallet information...</p>
         )}
       </div>
-      <TransactionForm />
+      <TransactionForm onTransactionAdded={onTransactionAdded} />
     </>
   );
 };

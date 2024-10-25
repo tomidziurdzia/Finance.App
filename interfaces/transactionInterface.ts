@@ -3,10 +3,17 @@ export interface Transaction {
   description: string;
   amount: number;
   type: number;
-  category: string;
+  categoryName: string;
   createdAt: Date;
 }
 
 export interface Transactions {
   transactions: Transaction[];
+}
+
+export enum TransactionType {
+  Income = 1,
+  Expense = 2,
+  Investment = 3,
+  Transfer = 4,
 }
