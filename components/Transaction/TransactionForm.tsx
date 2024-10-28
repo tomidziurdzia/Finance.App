@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus } from "lucide-react";
+import { CalendarIcon, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,6 +18,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -37,12 +42,14 @@ import {
   Transaction,
   TransactionType,
 } from "@/interfaces/transactionInterface";
+import { format } from "date-fns";
+import { Calendar } from "../ui/calendar";
+import { cn } from "@/lib/utils";
 
 interface TransactionDialogProps {
   onTransactionAdded: (newTransaction: Transaction) => void;
 }
 
-// Opciones para el tipo de transacción
 const typeOptions = Object.entries(TransactionType)
   .filter(([, value]) => typeof value === "number")
   .map(([label, value]) => ({
@@ -50,8 +57,8 @@ const typeOptions = Object.entries(TransactionType)
     value: value.toString(),
   }));
 
-// Esquema de validación de formulario
 const formSchema = z.object({
+  createdAt: z.date({ required_error: "Date is required" }),
   categoryId: z.string().min(1, { message: "Category is required." }),
   description: z.string().min(2, {
     message: "Description must be at least 2 characters.",
@@ -103,6 +110,7 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({
       type: "",
       walletId: "",
       amount: "",
+      createdAt: new Date(),
     },
   });
 
@@ -119,6 +127,7 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({
       ...values,
       amount: Number(values.amount),
       type: Number(values.type),
+      createdAt: values.createdAt.toISOString(),
     };
 
     const selectedWallet = wallets?.wallets.find(
@@ -147,6 +156,7 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({
       const newTransaction = await transactionService.createTransaction(
         transactionData
       );
+      console.log(newTransaction);
       onTransactionAdded(newTransaction);
       setOpen(false);
       form.reset();
@@ -183,6 +193,47 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="createdAt"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Date</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={(date) => field.onChange(date)}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="walletId"
