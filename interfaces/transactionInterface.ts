@@ -7,6 +7,14 @@ export interface Transaction {
   createdAt: Date;
 }
 
+export interface TransactionRequest {
+  description: string;
+  amount: number;
+  type: number;
+  categoryName?: string;
+  createdAt: string;
+}
+
 export interface Transactions {
   transactions: Transaction[];
 }
