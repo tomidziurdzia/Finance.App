@@ -38,17 +38,10 @@ import categoryService from "@/services/categoryService";
 import walletService from "@/services/walletService";
 import { Wallets } from "@/interfaces/walletInterface";
 import transactionService from "@/services/transactionService";
-import {
-  Transaction,
-  TransactionType,
-} from "@/interfaces/transactionInterface";
+import { TransactionType } from "@/interfaces/transactionInterface";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
 import { cn } from "@/lib/utils";
-
-interface TransactionDialogProps {
-  onTransactionAdded: (newTransaction: Transaction) => void;
-}
 
 const typeOptions = Object.entries(TransactionType)
   .filter(([, value]) => typeof value === "number")
@@ -75,9 +68,7 @@ const formSchema = z.object({
   walletId: z.string().min(1, { message: "Wallet is required." }),
 });
 
-const TransactionDialog: React.FC<TransactionDialogProps> = ({
-  onTransactionAdded,
-}) => {
+const TransactionDialog: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [wallets, setWallets] = useState<Wallets>();
@@ -118,6 +109,8 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({
     setOpen(isOpen);
     if (!isOpen) {
       form.reset();
+      setSelectedType(null);
+      form.setValue("categoryId", "");
       setAlertMessage(null);
     }
   };
@@ -153,11 +146,7 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({
     }
 
     try {
-      const newTransaction = await transactionService.createTransaction(
-        transactionData
-      );
-      console.log(newTransaction);
-      onTransactionAdded(newTransaction);
+      await transactionService.createTransaction(transactionData);
       setOpen(false);
       form.reset();
       setAlertMessage(null);
@@ -174,7 +163,7 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({
         (category) =>
           category.type === (selectedType as unknown as CategoryType)
       )
-    : categories;
+    : [];
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
