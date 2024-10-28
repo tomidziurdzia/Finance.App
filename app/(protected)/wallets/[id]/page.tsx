@@ -40,7 +40,13 @@ const Wallet = () => {
     setWallet((prevWallet) => {
       if (!prevWallet) return prevWallet;
 
-      const updatedTransactions = [newTransaction, ...prevWallet.transactions];
+      const updatedTransactions = [
+        newTransaction,
+        ...prevWallet.transactions,
+      ].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
 
       const newTotalBalance = updatedTransactions.reduce(
         (acc, transaction) => acc + transaction.amount,

@@ -23,7 +23,7 @@ const TransactionTable: React.FC<TransactionTable> = ({
         <TableRow>
           <TableHead>Date</TableHead>
           <TableHead>Description</TableHead>
-          <TableHead className="text-center">Category</TableHead>
+          <TableHead>Category</TableHead>
           <TableHead>Amount</TableHead>
           <TableHead>Type</TableHead>
           <TableHead className="text-center">Actions</TableHead>
@@ -31,16 +31,19 @@ const TransactionTable: React.FC<TransactionTable> = ({
       </TableHeader>
       <TableBody>
         {transactions.map((transaction) => {
-          console.log(transaction);
           const date = new Date(transaction.createdAt);
           return (
             <TableRow key={transaction.id}>
               <TableCell>{date.toLocaleDateString()}</TableCell>
               <TableCell>{transaction.description}</TableCell>
-              <TableCell>
-                {transaction.categoryName || <p className="text-center">-</p>}
-              </TableCell>
-              <TableCell>
+              <TableCell>{transaction.categoryName || <p>-</p>}</TableCell>
+              <TableCell
+                className={`${
+                  transaction.type.toString() === "Expense" && "text-red-400"
+                } ${
+                  transaction.type.toString() === "Income" && "text-green-400"
+                }`}
+              >
                 {transaction.amount} {currency}
               </TableCell>
               <TableCell>{transaction.type}</TableCell>
