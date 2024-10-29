@@ -10,6 +10,4 @@ export default async function Home() {
   } else {
     redirect("/auth/login");
   }
-
-  return null;
 }
