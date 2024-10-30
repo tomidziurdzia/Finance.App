@@ -13,8 +13,8 @@ import walletService from "@/lib/wallet-service";
 import { Wallets } from "@/interfaces/walletInterface";
 import categoryService from "@/lib/category-service";
 import { Category } from "@/interfaces/categoryInterface";
-import { SidebarWalletItem } from "./SidebarWalletItem";
-import { SidebarCategoryItem } from "./SidebarCategoryItem";
+import { SidebarWalletItem } from "@/components/Sidebar/SidebarWalletItem";
+import { SidebarCategoryItem } from "@/components/Sidebar/SidebarCategoryItem";
 
 export const Sidebar = async () => {
   const wallets: Wallets = await walletService.getAll();
