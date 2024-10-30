@@ -2,7 +2,7 @@ import walletService from "@/lib/wallet-service";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownIcon, ArrowUpIcon, WalletIcon } from "lucide-react";
 import TransactionTable from "@/components/Transaction/TransactionTable";
-import TransactionForm from "@/components/Transaction/TransactionForm";
+import AddTransaction from "@/components/Transaction/AddTransaction";
 
 export default async function WalletPage({
   params,
@@ -78,7 +78,7 @@ export default async function WalletPage({
           <p>Loading wallet information...</p>
         )}
       </div>
-      <TransactionForm />
+      <AddTransaction />
     </>
   );
 }
