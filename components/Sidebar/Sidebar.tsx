@@ -16,7 +16,7 @@ import { Category } from "@/interfaces/categoryInterface";
 import { SidebarWalletItem } from "./SidebarWalletItem";
 import { SidebarCategoryItem } from "./SidebarCategoryItem";
 
-const Sidebar = async () => {
+export const Sidebar = async () => {
   const wallets: Wallets = await walletService.getAll();
   const categories: Category[] = await categoryService.getAll();
 
@@ -58,5 +58,3 @@ const Sidebar = async () => {
     </SidebarComponent>
   );
 };
-
-export default Sidebar;

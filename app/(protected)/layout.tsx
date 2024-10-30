@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import Header from "@/components/Header/Header";
-import Sidebar from "@/components/sidebar/Sidebar";
+import { Sidebar as SidebarComponent } from "@/components/sidebar/Sidebar";
 
 export default function RootLayout({
   children,
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
-        <Sidebar />
+        <SidebarComponent />
         <SidebarInset>
           <Header />
           {children}
