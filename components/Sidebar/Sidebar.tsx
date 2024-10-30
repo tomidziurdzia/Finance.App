@@ -20,7 +20,6 @@ export const Sidebar = async () => {
   const wallets: Wallets = await walletService.getAll();
   const categories: Category[] = await categoryService.getAll();
 
-  console.log(wallets);
   return (
     <SidebarComponent>
       <SidebarHeader className="relative p-4">
