@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import Sidebar from "@/components/sidebar/Sidebar";
 import Header from "@/components/Header/Header";
+import Sidebar from "@/components/sidebar/Sidebar";
 
 export default function RootLayout({
   children,

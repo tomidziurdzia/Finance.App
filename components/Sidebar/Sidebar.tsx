@@ -45,7 +45,7 @@ const Sidebar = async () => {
         </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarGroupLabel>My Wallets</SidebarGroupLabel>
+            <SidebarGroupLabel>Categories</SidebarGroupLabel>
             <SidebarMenu>
               {categories.map((category) => (
                 <SidebarCategoryItem key={category.id} category={category} />
