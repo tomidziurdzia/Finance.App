@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import RegisterForm from "@/components/login/register-form";
+import RegisterForm from "@/components/Login/RegisterForm";
 
 export default function RegisterPage() {
   return (
