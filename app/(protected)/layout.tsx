@@ -1,25 +1,20 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-import Sidebar from "@/components/Sidebar/Sidebar";
-import Header from "@/components/Header/Header";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import Sidebar from "@/components/sidebar/Sidebar";
+import Header from "@/components/Header/Header";
 
-export default function ProtectedLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
+  const cookieStore = cookies();
+  const token = cookieStore.get("auth_token");
 
-  useEffect(() => {
-    const token = Cookies.get("auth_token");
-    if (!token) {
-      router.push("/auth/login");
-    }
-  }, [router]);
+  if (!token) {
+    redirect("/auth/login");
+  }
 
   return (
     <SidebarProvider>

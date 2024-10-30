@@ -1,26 +1,10 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import walletService from "@/lib/wallet-service";
 import { ArrowDownIcon, ArrowUpIcon, WalletIcon } from "lucide-react";
-import walletService from "@/services/walletService";
-import { TotalWallets } from "@/interfaces/walletInterface";
 
-export default function Home() {
-  const [wallets, setWallets] = useState<TotalWallets>();
+export default async function Home() {
+  const wallets = await walletService.getTotals();
 
-  useEffect(() => {
-    const fetchWallets = async () => {
-      try {
-        const data = await walletService.getTotals();
-        setWallets(data);
-      } catch (error: unknown) {
-        console.log(error);
-      }
-    };
-
-    fetchWallets();
-  }, []);
   const totalBalance = wallets?.total;
 
   return (

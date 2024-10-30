@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import LoginForm from "@/components/auth/login-form";
+import LoginForm from "@/components/login/login-form";
 
 export default function LoginPage() {
   return (

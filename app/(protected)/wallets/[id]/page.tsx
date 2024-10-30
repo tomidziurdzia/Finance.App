@@ -1,34 +1,15 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import walletService from "@/services/walletService";
-import { Wallet as WalletInterface } from "@/interfaces/walletInterface";
-import { usePathname } from "next/navigation";
-import TransactionTable from "@/components/Transaction/TransactionTable";
+import walletService from "@/lib/wallet-service";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownIcon, ArrowUpIcon, WalletIcon } from "lucide-react";
+import TransactionTable from "@/components/Transaction/TransactionTable";
 import TransactionForm from "@/components/Transaction/TransactionForm";
 
-const Wallet = () => {
-  const id = usePathname().split("/").pop();
-  const [wallet, setWallet] = useState<WalletInterface>();
-
-  useEffect(() => {
-    if (id) {
-      const fetchWallet = async () => {
-        try {
-          const data = await walletService.getWalletById(id);
-          setWallet(data);
-        } catch (error) {
-          console.error("Error fetching wallet", error);
-        }
-      };
-      fetchWallet();
-    }
-  }, [id]);
-
-  console.log(wallet);
-
+export default async function WalletPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const wallet = await walletService.getWalletById(params.id);
   const totalIncome = wallet?.income || "0";
   const totalExpense = wallet?.expense || "0";
 
@@ -100,6 +81,4 @@ const Wallet = () => {
       <TransactionForm />
     </>
   );
-};
-
-export default Wallet;
+}

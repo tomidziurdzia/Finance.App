@@ -27,8 +27,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const initAuth = async () => {
+      setIsLoading(true);
       try {
-        const currentUser = authService.getCurrentUser();
+        const currentUser = await authService.getCurrentUser();
         if (currentUser) {
           setUser(currentUser);
         }
@@ -69,10 +70,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const logout = () => {
-    authService.logout();
-    setUser(null);
-    router.push("/auth/login");
+  const logout = async () => {
+    setIsLoading(true);
+    try {
+      await authService.logout();
+      setUser(null);
+      router.push("/auth/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
