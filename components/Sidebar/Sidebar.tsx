@@ -5,36 +5,20 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
+  SidebarMenu,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import walletService from "@/services/walletService";
-import categoryService from "@/services/categoryService";
+import walletService from "@/lib/wallet-service";
 import { Wallets } from "@/interfaces/walletInterface";
+import categoryService from "@/lib/category-service";
 import { Category } from "@/interfaces/categoryInterface";
-import { useEffect, useState } from "react";
-import SidebarGroupComponent from "./SidebarGroupComponent";
+import { SidebarWalletItem } from "../SidebarComponents/SidebarWalletItem";
+import { SidebarCategoryItem } from "../SidebarComponents/SidebarCategoryItem";
 
-const Sidebar = () => {
-  const [wallets, setWallets] = useState<Wallets>();
-  const [categories, setCategories] = useState<Category[]>();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [dataWallets, dataCategories] = await Promise.all([
-          walletService.getAll(),
-          categoryService.getAll(),
-        ]);
-        setWallets(dataWallets);
-        setCategories(dataCategories);
-      } catch (error: unknown) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, []);
+const Sidebar = async () => {
+  const wallets: Wallets = await walletService.getAll();
+  const categories: Category[] = await categoryService.getAll();
 
   return (
     <SidebarComponent>
@@ -51,23 +35,21 @@ const Sidebar = () => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarGroupLabel>My Wallets</SidebarGroupLabel>
-            {wallets && (
-              <SidebarGroupComponent
-                items={wallets.wallets}
-                basePath="/wallets"
-              />
-            )}
+            <SidebarMenu>
+              {wallets.wallets.map((wallet) => (
+                <SidebarWalletItem key={wallet.id} wallet={wallet} />
+              ))}
+            </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarGroupLabel>Categories</SidebarGroupLabel>
-            {categories && (
-              <SidebarGroupComponent
-                items={categories}
-                basePath="/categories"
-              />
-            )}
+            <SidebarMenu>
+              {categories.map((category) => (
+                <SidebarCategoryItem key={category.id} category={category} />
+              ))}
+            </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
@@ -75,5 +57,4 @@ const Sidebar = () => {
     </SidebarComponent>
   );
 };
-
 export default Sidebar;
