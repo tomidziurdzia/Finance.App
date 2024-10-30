@@ -41,6 +41,7 @@ export default function RegisterForm() {
         description: "Something went wrong. Please try again.",
         variant: "destructive",
       });
+      console.log(error);
     }
   };
 
