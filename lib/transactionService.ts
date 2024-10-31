@@ -1,14 +1,15 @@
-import Cookies from "js-cookie";
 import {
   Transaction,
   TransactionRequest,
 } from "@/interfaces/transactionInterface";
+import { cookies } from "next/headers";
+import { apiUrls } from "./apiUrls";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 async function fetchWithAuth(url: string, options: RequestInit = {}) {
-  // Usamos js-cookie para obtener el token
-  const token = Cookies.get("auth_token");
+  const cookieStore = cookies();
+  const token = cookieStore.get("auth_token")?.value || null;
 
   const headers = {
     "Content-Type": "application/json",
@@ -31,9 +32,33 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
 
 const transactionService = {
   async createTransaction(data: TransactionRequest): Promise<Transaction> {
-    return fetchWithAuth(`${API_URL}/transactions`, {
+    return fetchWithAuth(`${API_URL}/${apiUrls.transactions}`, {
       method: "POST",
       body: JSON.stringify(data),
+    });
+  },
+
+  async getTransactions(): Promise<Transaction[]> {
+    return fetchWithAuth(`${API_URL}/transactions`);
+  },
+
+  async getTransactionById(id: string): Promise<Transaction> {
+    return fetchWithAuth(`${API_URL}/transactions/${id}`);
+  },
+
+  async updateTransaction(
+    id: string,
+    data: Partial<TransactionRequest>
+  ): Promise<Transaction> {
+    return fetchWithAuth(`${API_URL}/transactions/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async deleteTransaction(id: string): Promise<void> {
+    await fetchWithAuth(`${API_URL}/transactions/${id}`, {
+      method: "DELETE",
     });
   },
 };

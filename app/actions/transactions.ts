@@ -12,11 +12,10 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 export async function createTransaction(
   data: TransactionRequest
 ): Promise<Transaction> {
-  const cookieStore = cookies();
-  const token = cookieStore.get("auth_token")?.value;
+  const token = cookies().get("auth_token")?.value;
 
   if (!token) {
-    throw new Error("No authentication token found");
+    throw new Error("Unauthorized");
   }
 
   const response = await fetch(`${API_URL}/transactions`, {
@@ -29,12 +28,12 @@ export async function createTransaction(
   });
 
   if (!response.ok) {
-    throw new Error("Failed to create transaction");
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to create transaction");
   }
 
   const transaction: Transaction = await response.json();
 
-  // Revalidate the transactions page to reflect the new data
   revalidatePath("/transactions");
 
   return transaction;

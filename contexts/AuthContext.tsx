@@ -3,10 +3,10 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import authService, {
-  User,
   LoginCredentials,
   RegisterCredentials,
-} from "../services/authService";
+  User,
+} from "@/lib/authService";
 
 interface AuthContextType {
   user: User | null;
