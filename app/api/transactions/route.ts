@@ -34,7 +34,6 @@ export async function createTransaction(
 
   const transaction: Transaction = await response.json();
 
-  // Revalidate the transactions page to reflect the new data
   revalidatePath("/transactions");
 
   return transaction;
