@@ -3,6 +3,7 @@ import {
   TransactionRequest,
 } from "@/interfaces/transactionInterface";
 import { cookies } from "next/headers";
+import { apiUrls } from "./apiUrls";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -31,7 +32,7 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
 
 const transactionService = {
   async createTransaction(data: TransactionRequest): Promise<Transaction> {
-    return fetchWithAuth(`${API_URL}/transactions`, {
+    return fetchWithAuth(`${API_URL}/${apiUrls.transactions}`, {
       method: "POST",
       body: JSON.stringify(data),
     });

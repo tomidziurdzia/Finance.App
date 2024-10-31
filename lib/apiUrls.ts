@@ -7,4 +7,5 @@ export const apiUrls = {
     signup: "user/register",
     singin: "user/login",
   },
+  transactions: "transactions",
 };
