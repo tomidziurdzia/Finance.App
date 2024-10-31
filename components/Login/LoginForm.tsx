@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import authService from "@/lib/authService";
+import { login } from "@/app/actions/auth";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function LoginForm() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await authService.login({ email, password });
+      await login({ email, password });
       toast({
         title: "Successful login",
         description: "You have successfully logged in.",
@@ -31,7 +31,7 @@ export default function LoginForm() {
         description: "Incorrect email or password.",
         variant: "destructive",
       });
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }

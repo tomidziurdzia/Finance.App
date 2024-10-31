@@ -8,4 +8,6 @@ export const apiUrls = {
     singin: "user/login",
   },
   transactions: "transactions",
+  wallets: "wallets",
+  categories: "categories",
 };

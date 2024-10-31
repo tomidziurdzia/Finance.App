@@ -9,16 +9,16 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import walletService from "@/lib/wallet-service";
 import { Wallets } from "@/interfaces/walletInterface";
-import categoryService from "@/lib/category-service";
 import { Category } from "@/interfaces/categoryInterface";
 import { SidebarWalletItem } from "./SidebarWalletItem";
 import { SidebarCategoryItem } from "./SidebarCategoryItem";
+import { getAllWallets } from "@/app/actions/wallets";
+import { getAllCategories } from "@/app/actions/category";
 
 const Sidebar = async () => {
-  const wallets: Wallets = await walletService.getAll();
-  const categories: Category[] = await categoryService.getAll();
+  const wallets: Wallets = await getAllWallets();
+  const categories: Category[] = await getAllCategories();
 
   return (
     <SidebarComponent>
