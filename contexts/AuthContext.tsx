@@ -2,17 +2,21 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import authService, {
+import {
+  User,
   LoginCredentials,
   RegisterCredentials,
-  User,
-} from "@/lib/authService";
+  getCurrentUser,
+  login,
+  logout,
+  register,
+} from "@/app/actions/auth";
 
 interface AuthContextType {
   user: User | null;
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (credentials: RegisterCredentials) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -29,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const initAuth = async () => {
       setIsLoading(true);
       try {
-        const currentUser = await authService.getCurrentUser();
+        const currentUser = await getCurrentUser();
         if (currentUser) {
           setUser(currentUser);
         }
@@ -42,10 +46,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     initAuth();
   }, []);
 
-  const login = async (credentials: LoginCredentials) => {
+  const handleLogin = async (credentials: LoginCredentials) => {
     setIsLoading(true);
     try {
-      const user = await authService.login(credentials);
+      const user = await login(credentials);
       setUser(user);
       router.push("/home");
     } catch (error) {
@@ -56,10 +60,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const register = async (credentials: RegisterCredentials) => {
+  const handleRegister = async (credentials: RegisterCredentials) => {
     setIsLoading(true);
     try {
-      const user = await authService.register(credentials);
+      const user = await register(credentials);
       setUser(user);
       router.push("/home");
     } catch (error) {
@@ -70,10 +74,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const logout = async () => {
+  const handleLogout = async () => {
     setIsLoading(true);
     try {
-      await authService.logout();
+      await logout();
       setUser(null);
       router.push("/auth/login");
     } catch (error) {
@@ -84,7 +88,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isLoading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login: handleLogin,
+        register: handleRegister,
+        logout: handleLogout,
+        isLoading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
