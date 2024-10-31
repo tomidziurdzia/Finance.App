@@ -3,12 +3,16 @@ export interface Transaction {
   description: string;
   amount: number;
   type: number;
+  categoryId: string;
   categoryName: string;
+  walletId: string;
+  walletName: string;
   createdAt: Date;
 }
 
 export interface TransactionRequest {
   description: string;
+  walletId: string;
   amount: number;
   type: number;
   categoryName?: string;

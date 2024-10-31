@@ -39,7 +39,7 @@ import { TransactionType } from "@/interfaces/transactionInterface";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
-import { createTransaction } from "@/app/api/transactions/route";
+import { createTransaction } from "@/app/actions/transactions";
 
 interface TransactionDialogClientProps {
   initialCategories: Category[];
