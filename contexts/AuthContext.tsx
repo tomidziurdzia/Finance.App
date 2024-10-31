@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const user = await login(credentials);
       setUser(user);
-      router.push("/home");
+      router.push("/");
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const user = await register(credentials);
       setUser(user);
-      router.push("/home");
+      router.push("/");
     } catch (error) {
       console.error("Registration error:", error);
       throw error;
