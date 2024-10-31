@@ -68,7 +68,6 @@ const authService = {
         lastname: data.lastname,
         email: data.email,
       };
-      // Solo en el cliente:
       if (typeof window !== "undefined") {
         document.cookie = `auth_token=${data.token}; path=/; max-age=${
           60 * 60 * 24 * 7
