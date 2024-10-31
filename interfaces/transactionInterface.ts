@@ -10,6 +10,7 @@ export interface Transaction {
   createdAt: Date;
 }
 
+//! Why category name and not categoryId?
 export interface TransactionRequest {
   description: string;
   walletId: string;
