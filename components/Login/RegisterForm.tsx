@@ -33,7 +33,7 @@ export default function RegisterForm() {
         description: "Your account has been created.",
       });
       setIsRedirecting(true);
-      router.push("/home");
+      router.push("/");
     } catch (error) {
       toast({
         title: "Registration error",

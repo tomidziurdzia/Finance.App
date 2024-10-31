@@ -24,7 +24,7 @@ const Sidebar = async () => {
     <SidebarComponent>
       <SidebarHeader className="relative p-4">
         <Link
-          href="/home"
+          href="/"
           className="flex items-center gap-2 font-bold justify-center text-2xl"
           prefetch={false}
         >

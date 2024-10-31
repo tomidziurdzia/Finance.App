@@ -24,7 +24,7 @@ export default function LoginForm() {
         title: "Successful login",
         description: "You have successfully logged in.",
       });
-      router.push("/home");
+      router.push("/");
     } catch (error) {
       toast({
         title: "Login error",

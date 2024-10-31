@@ -4,6 +4,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
+import { SidebarContextProvider } from "@/components/context/sidebar-provider";
 
 export const metadata: Metadata = {
   title: "Finance App",
@@ -23,7 +24,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
-            {children}
+            <SidebarContextProvider>{children}</SidebarContextProvider>
             <Toaster />
           </AuthProvider>
         </ThemeProvider>
