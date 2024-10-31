@@ -1,9 +1,9 @@
+import { getWalletTotals } from "@/app/actions/wallets";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import walletService from "@/lib/wallet-service";
 import { ArrowDownIcon, ArrowUpIcon, WalletIcon } from "lucide-react";
 
 export default async function Home() {
-  const wallets = await walletService.getTotals();
+  const wallets = await getWalletTotals();
 
   const totalBalance = wallets?.total;
 
