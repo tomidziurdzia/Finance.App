@@ -1,15 +1,15 @@
-import walletService from "@/lib/wallet-service";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownIcon, ArrowUpIcon, WalletIcon } from "lucide-react";
 import TransactionTable from "@/components/Transaction/TransactionTable";
 import AddTransaction from "@/components/Transaction/AddTransaction";
+import { getWalletById } from "@/app/actions/wallets";
 
 export default async function WalletPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const wallet = await walletService.getWalletById(params.id);
+  const wallet = await getWalletById(params.id);
   const totalIncome = wallet?.income || "0";
   const totalExpense = wallet?.expense || "0";
 
