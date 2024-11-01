@@ -33,14 +33,14 @@ export default function LayoutHeader({
   return (
     <>
       <div
-        className={`flex justify-between p-3 pl-4 pr-4 text-gray-950 dark:text-gray-200 ${
+        className={`flex justify-between p-3 pl-4 pr-4 dark:text-gray-200 ${
           showDatePicker ? "flex-col sm:flex-row" : "flex-row items-center"
         }`}
       >
         <div className="flex">
           <Button
             className="mr-2 mt-[-1px] p-1 sm:hidden"
-            onClick={() => console.log("hola")}
+            onClick={() => setShow(!show)}
             variant={"ghost"}
           >
             <MenuIcon />

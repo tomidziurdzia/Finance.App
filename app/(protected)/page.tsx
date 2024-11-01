@@ -5,15 +5,13 @@ import Summary from "./summary";
 
 export default async function Page() {
   return (
-    <>
-      <DatePickerProvider>
-        <OverviewContextProvider>
-          <LayoutHeader title="overview" showDatePicker={true} />
-          <div className="p-4 pt-4">
-            <Summary />
-          </div>
-        </OverviewContextProvider>
-      </DatePickerProvider>
-    </>
+    <DatePickerProvider>
+      <OverviewContextProvider>
+        <LayoutHeader title="overview" showDatePicker={true} />
+        <div className="p-4 pt-4">
+          <Summary />
+        </div>
+      </OverviewContextProvider>
+    </DatePickerProvider>
   );
 }

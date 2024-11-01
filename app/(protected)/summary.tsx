@@ -12,17 +12,13 @@ export default async function Summary() {
 
   const totalBalance = wallets?.total;
 
-  console.log(wallets);
-
   const totalIncome = wallets.income;
   const totalSpent = -wallets.expense;
   const totalInvesments = -wallets.investment;
 
   return (
     <>
-      <h2 className="mb-4 font-semibold text-primary dark:text-white">
-        Summary
-      </h2>
+      <h2 className="mb-4 font-semibold dark:text-white">Summary</h2>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <SummaryCard
           icon={Wallet2}

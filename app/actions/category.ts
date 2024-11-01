@@ -1,65 +1,97 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { Category } from "@/interfaces/categoryInterface";
+import fetchWithAuth from "@/lib/fetchWithAuth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutos
 
-async function fetchWithAuth(url: string, options: RequestInit = {}) {
-  const token = cookies().get("auth_token")?.value;
+interface CacheItem<T> {
+  data: T;
+  timestamp: number;
+}
 
-  if (!token) {
-    throw new Error("Unauthorized access");
+const cache = new Map<string, CacheItem<any>>();
+
+function getCachedData<T>(key: string): T | null {
+  const cachedItem = cache.get(key);
+  if (cachedItem && Date.now() - cachedItem.timestamp < CACHE_EXPIRATION) {
+    return cachedItem.data;
+  } else if (cachedItem) {
+    cache.delete(key);
   }
+  return null;
+}
 
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-    ...options.headers,
-  };
-
-  const response = await fetch(url, { ...options, headers });
-
-  if (response.status === 401) {
-    throw new Error("Unauthorized access");
-  }
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
+function setCachedData<T>(key: string, data: T): void {
+  cache.set(key, {
+    data,
+    timestamp: Date.now(),
+  });
 }
 
 export async function getAllCategories(): Promise<Category[]> {
-  return fetchWithAuth(`${API_URL}/categories`);
+  const cacheKey = "allCategories";
+  const cachedCategories = getCachedData<Category[]>(cacheKey);
+
+  if (cachedCategories) {
+    return cachedCategories;
+  }
+
+  const categories = await fetchWithAuth(`${API_URL}/categories`);
+  setCachedData(cacheKey, categories);
+  return categories;
 }
 
 export async function getCategoryById(id: string): Promise<Category> {
-  return fetchWithAuth(`${API_URL}/categories/${id}`);
+  const cacheKey = `category_${id}`;
+  const cachedCategory = getCachedData<Category>(cacheKey);
+
+  if (cachedCategory) {
+    return cachedCategory;
+  }
+
+  const category = await fetchWithAuth(`${API_URL}/categories/${id}`);
+  setCachedData(cacheKey, category);
+  return category;
 }
 
 export async function createCategory(
   category: Omit<Category, "id">
 ): Promise<Category> {
-  return fetchWithAuth(`${API_URL}/categories`, {
+  const newCategory = await fetchWithAuth(`${API_URL}/categories`, {
     method: "POST",
     body: JSON.stringify(category),
   });
+  invalidateCategoryCache();
+  return newCategory;
 }
 
 export async function updateCategory(
   id: string,
   category: Partial<Category>
 ): Promise<Category> {
-  return fetchWithAuth(`${API_URL}/categories/${id}`, {
+  const updatedCategory = await fetchWithAuth(`${API_URL}/categories/${id}`, {
     method: "PUT",
     body: JSON.stringify(category),
   });
+  setCachedData(`category_${id}`, updatedCategory);
+  invalidateCategoryCache();
+  return updatedCategory;
 }
 
 export async function deleteCategory(id: string): Promise<void> {
   await fetchWithAuth(`${API_URL}/categories/${id}`, {
     method: "DELETE",
   });
+  cache.delete(`category_${id}`);
+  invalidateCategoryCache();
+}
+
+function invalidateCategoryCache() {
+  for (const key of [...cache.keys()]) {
+    if (key.startsWith("category_") || key === "allCategories") {
+      cache.delete(key);
+    }
+  }
 }
