@@ -4,7 +4,7 @@ import { Category } from "@/interfaces/categoryInterface";
 import fetchWithAuth from "@/lib/fetchWithAuth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-const CACHE_EXPIRATION = 5 * 60 * 1000; // 5 minutos
+const CACHE_EXPIRATION = 5 * 60 * 1000;
 
 interface CacheItem<T> {
   data: T;
@@ -77,7 +77,6 @@ export async function updateCategory(
     body: JSON.stringify(category),
   });
   setCachedData(`category_${id}`, updatedCategory);
-  invalidateCategoryCache();
   return updatedCategory;
 }
 
@@ -90,9 +89,5 @@ export async function deleteCategory(id: string): Promise<void> {
 }
 
 function invalidateCategoryCache() {
-  for (const key of [...cache.keys()]) {
-    if (key.startsWith("category_") || key === "allCategories") {
-      cache.delete(key);
-    }
-  }
+  cache.delete("allCategories");
 }
