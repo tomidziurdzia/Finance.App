@@ -6,15 +6,7 @@ import useSWR from "swr";
 import { useDate } from "./datepicker-provider";
 import { apiUrls } from "@/lib/apiUrls";
 import { dateFormat } from "@/constants/date";
-
-interface Transaction {
-  id: string;
-  amount: number;
-  type: number;
-  description: string;
-  createdAt: string;
-  // Add other fields as necessary
-}
+import { Transaction } from "@/interfaces/transactionInterface";
 
 interface OverviewContextType {
   loading: boolean;

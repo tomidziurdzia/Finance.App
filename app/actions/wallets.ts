@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { Wallet, Wallets } from "@/interfaces/walletInterface";
+import { TotalWallets, Wallet, Wallets } from "@/interfaces/walletInterface";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -39,6 +39,6 @@ export async function getWalletById(id: string): Promise<Wallet> {
   return fetchWithAuth(`${API_URL}/wallets/${id}`);
 }
 
-export async function getWalletTotals() {
+export async function getWalletTotals(): Promise<TotalWallets> {
   return fetchWithAuth(`${API_URL}/wallets/totals`);
 }

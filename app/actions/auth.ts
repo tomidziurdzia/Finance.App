@@ -21,6 +21,8 @@ export interface User {
   name: string;
   lastname: string;
   email: string;
+  currency: string;
+  locale: string;
 }
 
 export async function login(credentials: LoginCredentials): Promise<User> {
@@ -42,6 +44,8 @@ export async function login(credentials: LoginCredentials): Promise<User> {
       name: data.name,
       lastname: data.lastname,
       email: data.email,
+      currency: data.currency,
+      locale: data.locale,
     };
 
     cookies().set("auth_token", data.token, {
@@ -89,6 +93,8 @@ export async function register(
       name: data.name,
       lastname: data.lastname,
       email: data.email,
+      currency: data.currency,
+      locale: data.locale,
     };
 
     cookies().set("auth_token", data.token, {

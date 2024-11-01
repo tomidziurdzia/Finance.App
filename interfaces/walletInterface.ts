@@ -19,10 +19,14 @@ export interface TotalWallets {
   wallets: {
     id: string;
     total: number;
+    income: number;
+    expense: number;
+    investment: number;
   };
   total: number;
   income: number;
   expense: number;
+  investment: number;
 }
 
 export interface WalletApiEndpoints {
