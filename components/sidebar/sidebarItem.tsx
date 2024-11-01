@@ -8,7 +8,6 @@ import {
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { Category } from "@/interfaces/categoryInterface";
 
 interface Props {
   name: string;

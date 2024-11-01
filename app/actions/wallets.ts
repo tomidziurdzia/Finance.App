@@ -1,6 +1,5 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { TotalWallets, Wallet, Wallets } from "@/interfaces/walletInterface";
 import fetchWithAuth from "@/lib/fetchWithAuth";
 
@@ -12,6 +11,7 @@ interface CacheItem<T> {
   timestamp: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const cache = new Map<string, CacheItem<any>>();
 
 function getCachedData<T>(key: string): T | null {
@@ -19,7 +19,7 @@ function getCachedData<T>(key: string): T | null {
   if (cachedItem && Date.now() - cachedItem.timestamp < CACHE_EXPIRATION) {
     return cachedItem.data;
   } else if (cachedItem) {
-    cache.delete(key); // Elimina el elemento si está caducado
+    cache.delete(key);
   }
   return null;
 }

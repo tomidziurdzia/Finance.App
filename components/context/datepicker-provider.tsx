@@ -12,6 +12,7 @@ import { addDays, startOfMonth } from "date-fns";
 
 const DatePickerContext = createContext(null);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const DatePickerProvider = (props: any) => {
   const [date, setDate] = useState({
     from: startOfMonth(new Date()),
@@ -21,6 +22,7 @@ export const DatePickerProvider = (props: any) => {
   const { children, ...others } = props;
 
   const onChange = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (state: any) => {
       setDate({
         ...(state == undefined && { ...date }),
@@ -43,6 +45,7 @@ export const DatePickerProvider = (props: any) => {
 };
 
 export const useDate = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const context = useContext<any>(DatePickerContext);
   if (context === undefined) {
     throw new Error(`useUser must be used within a DatePickerContext.`);

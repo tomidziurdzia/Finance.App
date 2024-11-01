@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import Header from "@/components/header/Header";
-import Sidebar from "@/components/sidebar/Sidebar";
+import Header from "@/components/header/header";
+import Sidebar from "@/components/sidebar/sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies();

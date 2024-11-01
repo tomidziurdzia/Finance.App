@@ -2,8 +2,6 @@
 
 import { cookies } from "next/headers";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-
 async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const token = cookies().get("auth_token")?.value;
 
