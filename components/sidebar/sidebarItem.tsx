@@ -17,7 +17,12 @@ interface Props {
   pathname: string;
 }
 
-export const SidebarItem = ({ name, description, id, pathname }: Props) => {
+export default function SidebarItem({
+  name,
+  description,
+  id,
+  pathname,
+}: Props) {
   const path = `${pathname}/${id}`;
   const currentPath = usePathname();
 
@@ -44,4 +49,4 @@ export const SidebarItem = ({ name, description, id, pathname }: Props) => {
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
-};
+}
