@@ -86,13 +86,10 @@ export async function getWalletTotals(): Promise<TotalWallets> {
 }
 
 export async function invalidateWalletCache() {
-  for (const key of cache.keys()) {
-    if (
-      key.startsWith("wallet_") ||
-      key === "allWallets" ||
-      key === "walletTotals"
-    ) {
-      cache.delete(key);
-    }
-  }
+  cache.delete("allWallets");
+  cache.delete("walletTotals");
+}
+
+export async function invalidateWalletByIdCache(id: string) {
+  cache.delete(`wallet_${id}`);
 }

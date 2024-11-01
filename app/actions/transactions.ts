@@ -4,8 +4,8 @@ import {
   Transaction,
   TransactionRequest,
 } from "@/interfaces/transactionInterface";
-import { apiUrls } from "@/lib/apiUrls";
 import fetchWithAuth from "@/lib/fetchWithAuth";
+import { revalidatePath } from "next/cache";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 const CACHE_EXPIRATION = 5 * 60 * 1000;
@@ -38,11 +38,14 @@ function setCachedData<T>(key: string, data: T): void {
 export async function createTransaction(
   data: TransactionRequest
 ): Promise<Transaction> {
-  invalidateTransactionCache();
-  return fetchWithAuth(`${API_URL}/${apiUrls.transactions}`, {
+  const transaction = await fetchWithAuth(`${API_URL}/transactions`, {
     method: "POST",
     body: JSON.stringify(data),
   });
+
+  invalidateTransactionCache();
+  revalidatePath("/transactions");
+  return transaction;
 }
 
 export async function getTransactions(): Promise<Transaction[]> {
@@ -83,7 +86,7 @@ export async function updateTransaction(
     }
   );
   setCachedData(`transaction_${id}`, updatedTransaction);
-  invalidateTransactionCache();
+  revalidatePath("/transactions");
   return updatedTransaction;
 }
 
@@ -92,13 +95,9 @@ export async function deleteTransaction(id: string): Promise<void> {
     method: "DELETE",
   });
   cache.delete(`transaction_${id}`);
-  invalidateTransactionCache();
+  revalidatePath("/transactions");
 }
 
 function invalidateTransactionCache() {
-  for (const key of [...cache.keys()]) {
-    if (key.startsWith("transaction_") || key === "allTransactions") {
-      cache.delete(key);
-    }
-  }
+  cache.delete("allTransactions");
 }
