@@ -11,12 +11,11 @@ import {
 import Link from "next/link";
 import { Wallets } from "@/interfaces/walletInterface";
 import { Category } from "@/interfaces/categoryInterface";
-import { SidebarWalletItem } from "./SidebarWalletItem";
-import { SidebarCategoryItem } from "./SidebarCategoryItem";
 import { getAllWallets } from "@/app/actions/wallets";
 import { getAllCategories } from "@/app/actions/category";
+import Item from "./Item";
 
-const Sidebar = async () => {
+export default async function Sidebar() {
   const wallets: Wallets = await getAllWallets();
   const categories: Category[] = await getAllCategories();
 
@@ -36,8 +35,13 @@ const Sidebar = async () => {
           <SidebarGroupContent>
             <SidebarGroupLabel>My Wallets</SidebarGroupLabel>
             <SidebarMenu>
-              {wallets.wallets.map((wallet) => (
-                <SidebarWalletItem key={wallet.id} wallet={wallet} />
+              {wallets.wallets.map((item) => (
+                <Item
+                  key={item.id}
+                  {...item}
+                  description={item.currency}
+                  pathname="/wallets"
+                />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -46,8 +50,13 @@ const Sidebar = async () => {
           <SidebarGroupContent>
             <SidebarGroupLabel>Categories</SidebarGroupLabel>
             <SidebarMenu>
-              {categories.map((category) => (
-                <SidebarCategoryItem key={category.id} category={category} />
+              {categories.map((item) => (
+                <Item
+                  key={item.id}
+                  {...item}
+                  description={item.type}
+                  pathname="/categories"
+                />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -56,5 +65,4 @@ const Sidebar = async () => {
       <SidebarRail />
     </SidebarComponent>
   );
-};
-export default Sidebar;
+}

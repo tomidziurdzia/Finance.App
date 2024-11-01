@@ -5,10 +5,6 @@ const defaultDateStyle: Intl.DateTimeFormatOptions = {
   month: "short",
   year: "numeric",
 };
-const timeStyle: Intl.DateTimeFormatOptions = {
-  hour: "numeric",
-  minute: "numeric",
-};
 
 const currencyStyle: Intl.NumberFormatOptions = {
   style: "currency",
@@ -33,7 +29,8 @@ export const formatCurrency = ({
   value,
   currency = defaultCurrency,
   locale = defaultLocale,
-}: Currency): any => {
+}: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+Currency): any => {
   try {
     return new Intl.NumberFormat(locale, { ...currencyStyle, currency })
       .format(value)
@@ -47,7 +44,8 @@ export const formatDate = ({
   date,
   locale = defaultLocale,
   dateStyle = defaultDateStyle,
-}: DateType): any => {
+}: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+DateType): any => {
   try {
     return new Intl.DateTimeFormat(locale, dateStyle).format(new Date(date));
   } catch {

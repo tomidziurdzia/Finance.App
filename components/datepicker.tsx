@@ -34,6 +34,7 @@ function DatePickerWithRange({
 }: {
   className?: string;
   date: DateRange;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange: any;
 }) {
   return (
@@ -82,6 +83,7 @@ function DatePickerSelect({
   onChange,
   selectedValue,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange: any;
   selectedValue: string;
 }) {

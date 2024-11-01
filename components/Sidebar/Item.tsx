@@ -1,6 +1,5 @@
 "use client";
 
-import { Wallet } from "@/interfaces/walletInterface";
 import {
   SidebarGroupLabel,
   SidebarMenuButton,
@@ -11,11 +10,14 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
 interface Props {
-  wallet: Wallet;
+  name: string;
+  description: string;
+  id: string;
+  pathname: string;
 }
 
-export const SidebarWalletItem = ({ wallet }: Props) => {
-  const path = `/wallets/${wallet.id}`;
+export default function Item({ name, description, id, pathname }: Props) {
+  const path = `${pathname}/${id}`;
   const currentPath = usePathname();
 
   return (
@@ -32,13 +34,13 @@ export const SidebarWalletItem = ({ wallet }: Props) => {
           )}
         >
           <div className="flex justify-between w-full items-center">
-            <p>{wallet.name}</p>
+            <p>{name}</p>
             <SidebarGroupLabel className="text-xs">
-              {wallet.currency}
+              {description}
             </SidebarGroupLabel>
           </div>
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
-};
+}

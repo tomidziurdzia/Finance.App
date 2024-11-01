@@ -4,11 +4,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import Header from "@/components/Header/Header";
 import Sidebar from "@/components/Sidebar/Sidebar";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies();
   const token = cookieStore.get("auth_token");
 
