@@ -1,4 +1,4 @@
-import SummaryCard from "@/components/card/summary-card";
+import SummaryCard from "@/components/Card/SummaryCard";
 import { formatCurrency } from "@/lib/formatter";
 import { Banknote, Briefcase, PiggyBank, Wallet2 } from "lucide-react";
 import { getWalletTotals } from "../actions/wallets";
