@@ -16,12 +16,7 @@ interface Props {
   pathname: string;
 }
 
-export default function SidebarItem({
-  name,
-  description,
-  id,
-  pathname,
-}: Props) {
+export default function Item({ name, description, id, pathname }: Props) {
   const path = `${pathname}/${id}`;
   const currentPath = usePathname();
 

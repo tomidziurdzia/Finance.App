@@ -13,7 +13,7 @@ import { Wallets } from "@/interfaces/walletInterface";
 import { Category } from "@/interfaces/categoryInterface";
 import { getAllWallets } from "@/app/actions/wallets";
 import { getAllCategories } from "@/app/actions/category";
-import SidebarItem from "./SidebarItem";
+import Item from "./Item";
 
 export default async function Sidebar() {
   const wallets: Wallets = await getAllWallets();
@@ -36,7 +36,7 @@ export default async function Sidebar() {
             <SidebarGroupLabel>My Wallets</SidebarGroupLabel>
             <SidebarMenu>
               {wallets.wallets.map((item) => (
-                <SidebarItem
+                <Item
                   key={item.id}
                   {...item}
                   description={item.currency}
@@ -51,7 +51,7 @@ export default async function Sidebar() {
             <SidebarGroupLabel>Categories</SidebarGroupLabel>
             <SidebarMenu>
               {categories.map((item) => (
-                <SidebarItem
+                <Item
                   key={item.id}
                   {...item}
                   description={item.type}
