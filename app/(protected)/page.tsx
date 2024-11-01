@@ -1,6 +1,6 @@
 import { DatePickerProvider } from "@/components/context/datepicker-provider";
 import { OverviewContextProvider } from "@/components/context/overview-provider";
-import LayoutHeader from "@/components/Layout/Header";
+import LayoutHeader from "@/components/Layout/LayoutHeader";
 import Summary from "./summary";
 
 export default async function Page() {
