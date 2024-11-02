@@ -19,7 +19,7 @@ export default function SummaryCard({
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between space-x-4">
-        <div className="flex items-center space-x-4 gap-4">
+        <div className="flex items-center space-x-4">
           <div className={`p-2 rounded-full ${backgroundColor}`}>
             <Icon className={`h-6 w-6 ${color}`} />{" "}
           </div>
