@@ -1,5 +1,5 @@
 const defaultCurrency = "EUR";
-const defaultLocale = "eu-EUR";
+const defaultLocale = "es-ES";
 const defaultDateStyle: Intl.DateTimeFormatOptions = {
   day: "2-digit",
   month: "short",
@@ -32,9 +32,14 @@ export const formatCurrency = ({
 }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
 Currency): any => {
   try {
-    return new Intl.NumberFormat(locale, { ...currencyStyle, currency })
+    const formattedCurrency = new Intl.NumberFormat(locale, {
+      ...currencyStyle,
+      currency,
+    })
       .format(value)
       .replace(/^(\D+)/, "$1 ");
+
+    return formattedCurrency;
   } catch {
     return value;
   }

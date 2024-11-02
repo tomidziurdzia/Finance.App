@@ -8,6 +8,7 @@ export interface Wallet {
   transactions: Transaction[];
   income: number;
   expense: number;
+  investment: number;
 }
 
 export interface Wallets {
