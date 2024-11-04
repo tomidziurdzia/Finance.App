@@ -11,6 +11,8 @@ import {
   logout,
   register,
 } from "@/app/actions/auth";
+import { SWRConfig } from "swr";
+import fetcher from "@/lib/fetcher";
 
 interface AuthContextType {
   user: User | null;
@@ -97,7 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         isLoading,
       }}
     >
-      {children}
+      <SWRConfig value={{ fetcher }}>{user ? children : null}</SWRConfig>
     </AuthContext.Provider>
   );
 };

@@ -38,6 +38,7 @@ export default function DataTableFacetedFilter<TData, TValue>({
 }: DataTableFacetedFilter<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
+  console.log(selectedValues);
 
   return (
     <Popover>
@@ -70,11 +71,11 @@ export default function DataTableFacetedFilter<TData, TValue>({
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.categoryId))
+                    .filter((option) => selectedValues.has(option.categoryName))
                     .map((option) => (
                       <Badge
                         variant="secondary"
-                        key={option.categoryId}
+                        key={option.categoryName}
                         className="whitespace-nowrap rounded-sm px-1 font-normal"
                       >
                         {option.categoryName}
@@ -93,15 +94,15 @@ export default function DataTableFacetedFilter<TData, TValue>({
             <CommandEmpty>No found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
-                const isSelected = selectedValues.has(option.categoryId);
+                const isSelected = selectedValues.has(option.categoryName);
                 return (
                   <CommandItem
-                    key={option.categoryId}
+                    key={option.categoryName}
                     onSelect={() => {
                       if (isSelected) {
-                        selectedValues.delete(option.categoryId);
+                        selectedValues.delete(option.categoryName);
                       } else {
-                        selectedValues.add(option.categoryId);
+                        selectedValues.add(option.categoryName);
                       }
                       const filterValues = Array.from(selectedValues);
                       column?.setFilterValue(
@@ -121,9 +122,9 @@ export default function DataTableFacetedFilter<TData, TValue>({
                       <CheckIcon className={cn("h-4 w-4")} />
                     </div>
                     <span>{option.categoryName}</span>
-                    {facets?.get(option.categoryId) && (
+                    {facets?.get(option.categoryName) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
-                        {facets.get(option.categoryId)}
+                        {facets.get(option.categoryName)}
                       </span>
                     )}
                   </CommandItem>

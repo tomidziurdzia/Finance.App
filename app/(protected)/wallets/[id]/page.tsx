@@ -18,7 +18,7 @@ export default async function WalletPage({
   return (
     <>
       <LayoutHeader title={wallet.name} />
-      <DataContextProvider name={wallet.name}>
+      <DataContextProvider id={wallet.id}>
         <div className="p-4 pt-4 w-full">
           <WalletSummary
             walletCurrency={wallet.currency}
