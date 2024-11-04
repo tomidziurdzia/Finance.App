@@ -22,6 +22,7 @@ export default function WalletTable(wallet: Wallet) {
   );
   const [selected, setSelected] = useState({});
   const { data, loading, filter, mutate } = useData();
+  console.log(selected);
 
   //! Change url
   const onDelete = useCallback(
