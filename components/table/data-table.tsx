@@ -89,8 +89,6 @@ export default function DataTable<TData, TValue>(props: DataTableProps) {
     meta: options,
   });
 
-  console.log(data);
-
   return (
     <div className="mb-8">
       <DataTableToolbar

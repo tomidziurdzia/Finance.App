@@ -38,6 +38,7 @@ export default function DataTableFacetedFilter<TData, TValue>({
 }: DataTableFacetedFilter<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
+
   console.log(selectedValues);
 
   return (
@@ -75,7 +76,7 @@ export default function DataTableFacetedFilter<TData, TValue>({
                     .map((option) => (
                       <Badge
                         variant="secondary"
-                        key={option.categoryName}
+                        key={option.categoryId}
                         className="whitespace-nowrap rounded-sm px-1 font-normal"
                       >
                         {option.categoryName}
@@ -97,23 +98,29 @@ export default function DataTableFacetedFilter<TData, TValue>({
                 const isSelected = selectedValues.has(option.categoryName);
                 return (
                   <CommandItem
-                    key={option.categoryName}
+                    key={option.categoryId}
                     onSelect={() => {
                       if (isSelected) {
-                        selectedValues.delete(option.categoryName);
+                        selectedValues.delete(option.categoryId);
                       } else {
-                        selectedValues.add(option.categoryName);
+                        selectedValues.add(option.categoryId);
                       }
                       const filterValues = Array.from(selectedValues);
+                      const filterNames = filterValues.map((id) => {
+                        const category = options.find(
+                          (cat) => cat.categoryId === id
+                        );
+                        return category ? category.categoryName : "";
+                      });
                       column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined
+                        filterNames.length ? filterNames : undefined
                       );
-                      onFilter?.(filterValues.length ? filterValues : []);
+                      onFilter?.(filterNames.length ? filterNames : []);
                     }}
                   >
                     <div
                       className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-gray-600",
                         isSelected
                           ? "bg-primary text-primary-foreground"
                           : "opacity-50 [&_svg]:invisible"
