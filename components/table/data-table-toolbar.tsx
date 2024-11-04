@@ -47,7 +47,7 @@ export default function DataTableToolbar<TData>(
       <div className="mb-4 flex w-full flex-1 items-center space-x-2 sm:mb-0">
         <Input
           disabled={loading}
-          placeholder="Filter by name"
+          placeholder="Filter by description"
           value={
             (table.getColumn("description")?.getFilterValue() as string) ?? ""
           }
@@ -72,7 +72,7 @@ export default function DataTableToolbar<TData>(
               filter.onFilter?.([]);
               table.resetColumnFilters();
             }}
-            className="h-8 px-2 text-primary lg:px-3"
+            className="h-7"
           >
             Reset
             <Cross2Icon className="ml-3 h-4 w-4" />

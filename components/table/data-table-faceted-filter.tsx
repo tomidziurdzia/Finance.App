@@ -70,7 +70,7 @@ export default function DataTableFacetedFilter<TData, TValue>({
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.categoryId))
+                    .filter((option) => selectedValues.has(option.categoryName))
                     .map((option) => (
                       <Badge
                         variant="secondary"
@@ -93,7 +93,7 @@ export default function DataTableFacetedFilter<TData, TValue>({
             <CommandEmpty>No found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
-                const isSelected = selectedValues.has(option.categoryId);
+                const isSelected = selectedValues.has(option.categoryName);
                 return (
                   <CommandItem
                     key={option.categoryId}
@@ -104,15 +104,21 @@ export default function DataTableFacetedFilter<TData, TValue>({
                         selectedValues.add(option.categoryId);
                       }
                       const filterValues = Array.from(selectedValues);
+                      const filterNames = filterValues.map((id) => {
+                        const category = options.find(
+                          (cat) => cat.categoryId === id
+                        );
+                        return category ? category.categoryName : "";
+                      });
                       column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined
+                        filterNames.length ? filterNames : undefined
                       );
-                      onFilter?.(filterValues.length ? filterValues : []);
+                      onFilter?.(filterNames.length ? filterNames : []);
                     }}
                   >
                     <div
                       className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-gray-600",
                         isSelected
                           ? "bg-primary text-primary-foreground"
                           : "opacity-50 [&_svg]:invisible"
@@ -121,9 +127,9 @@ export default function DataTableFacetedFilter<TData, TValue>({
                       <CheckIcon className={cn("h-4 w-4")} />
                     </div>
                     <span>{option.categoryName}</span>
-                    {facets?.get(option.categoryId) && (
+                    {facets?.get(option.categoryName) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
-                        {facets.get(option.categoryId)}
+                        {facets.get(option.categoryName)}
                       </span>
                     )}
                   </CommandItem>

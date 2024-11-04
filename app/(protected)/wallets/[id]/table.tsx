@@ -21,10 +21,10 @@ export default function WalletTable(wallet: Wallet) {
     [] as Array<{ categoryId: string; categoryName: string }>
   );
   const [selected, setSelected] = useState({});
-  const { loading, filter, mutate } = useData();
-
+  const { data, loading, filter, mutate } = useData();
   console.log(selected);
 
+  //! Change url
   const onDelete = useCallback(
     async (id: string) => {
       try {
@@ -64,7 +64,7 @@ export default function WalletTable(wallet: Wallet) {
         options={{ onDelete, onEdit }}
         filter={filter}
         columns={columns}
-        data={wallet.transactions}
+        data={data}
         loading={loading}
         categories={categories}
       />

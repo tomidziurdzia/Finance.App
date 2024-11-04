@@ -3,20 +3,21 @@ import { views } from "./table";
 
 export const getApiUrl = (
   filterKey: string,
-  apiPath: string,
+  id: string,
   categories: string[] = [],
   isNotRange = false
 ) => {
-  if (isNotRange) {
-    return `/api/${apiPath}`;
+  if (!isNotRange) {
+    const baseUrl = `api/wallets/${id}`;
+    return baseUrl;
   }
 
   if (filterKey === views.all.key) {
-    return `/api/${apiPath}?categories=${categories?.join(",")}`;
+    return `/api/${id}?categories=${categories?.join(",")}`;
   }
 
   const [start, end] = getRangeDateForFilter(filterKey);
-  return `/api/${apiPath}?from=${start}&to=${end}&categories=${categories?.join(
+  return `/api/${id}?from=${start}&to=${end}&categories=${categories?.join(
     ","
   )}`;
 };

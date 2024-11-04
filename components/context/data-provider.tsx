@@ -17,12 +17,12 @@ const DataContext = createContext(null);
 
 type Props = {
   children: React.ReactNode;
-  name: string;
+  id: string;
   isNotRange?: boolean;
 };
 
 export const DataContextProvider = (props: Props) => {
-  const { children, name, isNotRange = false } = props;
+  const { children, id, isNotRange = false } = props;
   const [filter, setFilter] = useState(views.thisMonth.key);
   const [categories, setCategories] = useState<string[]>([]);
 
@@ -30,7 +30,7 @@ export const DataContextProvider = (props: Props) => {
     data = [],
     mutate,
     isLoading,
-  } = useSWR(getApiUrl(filter, name, categories, isNotRange));
+  } = useSWR(getApiUrl(filter, id, categories, isNotRange));
 
   const onFilter = useCallback((categories: string[] = []) => {
     setCategories(categories);
