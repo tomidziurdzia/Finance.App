@@ -9,9 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import LoginForm from "@/components/Login/LoginForm";
+import Form from "./form";
 
-export default function LoginPage() {
+export default function SignIn() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4 lg:p-0">
       <div className="flex w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
@@ -24,14 +24,14 @@ export default function LoginPage() {
           </CardHeader>
           <CardContent>
             <Suspense fallback={<div>Loading...</div>}>
-              <LoginForm />
+              <Form />
             </Suspense>
           </CardContent>
           <CardFooter className="mx-auto">
             <p className="text-sm text-secondary text-center">
               Don&apos;t have an account?{" "}
               <Link
-                href="/auth/register"
+                href="/auth/signup"
                 className="font-medium text-gray-700 inline-block"
               >
                 Sign up for free

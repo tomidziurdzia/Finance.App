@@ -3,30 +3,16 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { apiUrls } from "@/lib/apiUrls";
+import {
+  LoginCredentials,
+  RegisterCredentials,
+  User,
+} from "@/interfaces/userInterface";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface RegisterCredentials extends LoginCredentials {
-  name: string;
-  lastname: string;
-}
-
-export interface User {
-  id: string;
-  name: string;
-  lastname: string;
-  email: string;
-  currency: string;
-  locale: string;
-}
-
 export async function login(credentials: LoginCredentials): Promise<User> {
-  const response = await fetch(`${API_URL}/${apiUrls.auth.singin}`, {
+  const response = await fetch(`${API_URL}${apiUrls.auth.signin}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(credentials),
@@ -69,7 +55,7 @@ export async function login(credentials: LoginCredentials): Promise<User> {
 export async function logout() {
   cookies().delete("auth_token");
   cookies().delete("user");
-  redirect("/login");
+  redirect("/signin");
 }
 
 export async function register(

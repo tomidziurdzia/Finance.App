@@ -1,44 +1,46 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
-import { login } from "@/app/actions/auth";
 
-export default function LoginForm() {
-  const router = useRouter();
+export default function Form() {
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    try {
-      await login({ email, password });
-      toast({
-        title: "Successful login",
-        description: "You have successfully logged in.",
-      });
-      router.push("/");
-    } catch (error) {
-      toast({
-        title: "Login error",
-        description: "Incorrect email or password.",
-        variant: "destructive",
-      });
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="name">Name</Label>
+        <Input
+          id="name"
+          type="text"
+          placeholder="Enter your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="border border-gray-500 text-gray-800"
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="lastname">Lastname</Label>
+        <Input
+          id="lastname"
+          type="text"
+          placeholder="Enter your lastname"
+          value={lastname}
+          onChange={(e) => setLastname(e.target.value)}
+          required
+          className="border border-gray-500 text-gray-800"
+        />
+      </div>
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -63,12 +65,8 @@ export default function LoginForm() {
           className="border border-gray-500 text-gray-800"
         />
       </div>
-      <Button
-        type="submit"
-        className="w-full dark:bg-primary text-gray-800"
-        disabled={isLoading}
-      >
-        {isLoading ? "Signing in..." : "Sign in"}
+      <Button type="submit" className="w-full text-gray-800">
+        Sign up
       </Button>
     </form>
   );

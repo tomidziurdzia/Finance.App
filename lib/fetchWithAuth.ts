@@ -24,9 +24,11 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
     if (response.status === 401) {
       throw new Error("Unauthorized access - Invalid token");
     }
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+
     return response.json();
   } catch (error) {
     console.error("Fetch failed:", error);

@@ -1,6 +1,7 @@
 "use server";
 
 import { Category } from "@/interfaces/categoryInterface";
+import { apiUrls } from "@/lib/apiUrls";
 import fetchWithAuth from "@/lib/fetchWithAuth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
@@ -39,7 +40,9 @@ export async function getAllCategories(): Promise<Category[]> {
     return cachedCategories;
   }
 
-  const categories = await fetchWithAuth(`${API_URL}/categories`);
+  const categories = await fetchWithAuth(
+    `${API_URL}${apiUrls.categories.getAll}`
+  );
   setCachedData(cacheKey, categories);
   return categories;
 }
@@ -52,7 +55,9 @@ export async function getCategoryById(id: string): Promise<Category> {
     return cachedCategory;
   }
 
-  const category = await fetchWithAuth(`${API_URL}/categories/${id}`);
+  const category = await fetchWithAuth(
+    `${API_URL}${apiUrls.categories.getById(id)}`
+  );
   setCachedData(cacheKey, category);
   return category;
 }
@@ -60,10 +65,13 @@ export async function getCategoryById(id: string): Promise<Category> {
 export async function createCategory(
   category: Omit<Category, "id">
 ): Promise<Category> {
-  const newCategory = await fetchWithAuth(`${API_URL}/categories`, {
-    method: "POST",
-    body: JSON.stringify(category),
-  });
+  const newCategory = await fetchWithAuth(
+    `${API_URL}${apiUrls.categories.create}`,
+    {
+      method: "POST",
+      body: JSON.stringify(category),
+    }
+  );
   invalidateCategoryCache();
   return newCategory;
 }
@@ -72,16 +80,19 @@ export async function updateCategory(
   id: string,
   category: Partial<Category>
 ): Promise<Category> {
-  const updatedCategory = await fetchWithAuth(`${API_URL}/categories/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(category),
-  });
+  const updatedCategory = await fetchWithAuth(
+    `${API_URL}${apiUrls.categories.putById(id)}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(category),
+    }
+  );
   setCachedData(`category_${id}`, updatedCategory);
   return updatedCategory;
 }
 
 export async function deleteCategory(id: string): Promise<void> {
-  await fetchWithAuth(`${API_URL}/categories/${id}`, {
+  await fetchWithAuth(`${API_URL}${apiUrls.categories.deleteById(id)}`, {
     method: "DELETE",
   });
   cache.delete(`category_${id}`);

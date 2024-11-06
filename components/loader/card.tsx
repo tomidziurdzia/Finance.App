@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 
 export default function CardLoader({
@@ -10,20 +10,20 @@ export default function CardLoader({
 }) {
   return (
     <div
-      className={`grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 ${className}`}
+      className={`grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 ${className}`}
     >
       {Array(cards)
         .fill(0)
         .map((card, index) => (
-          <Card key={`${card}-${index}`}>
-            <CardHeader className="pb-0">
-              <CardTitle>
+          <Card key={`${card}-${index}`} className="px-2 py-4">
+            <div className="pb-0">
+              <div>
                 <Skeleton className="h-4 rounded-sm" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </div>
+            </div>
+            <div>
               <Skeleton className="mt-2 h-7 w-[60%] rounded-sm" />
-            </CardContent>
+            </div>
           </Card>
         ))}
     </div>

@@ -13,7 +13,7 @@ import { Wallets } from "@/interfaces/walletInterface";
 import { Category } from "@/interfaces/categoryInterface";
 import { getAllWallets } from "@/app/actions/wallets";
 import { getAllCategories } from "@/app/actions/category";
-import Item from "./Item";
+import Item from "./item";
 
 export default async function Sidebar() {
   const wallets: Wallets = await getAllWallets();

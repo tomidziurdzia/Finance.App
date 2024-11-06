@@ -1,32 +1,27 @@
-export interface Transaction {
+export interface TransactionBase {
   id: string;
-  description: string;
-  amount: number;
-  type: number;
-  categoryId: string;
-  categoryName: string;
   walletId: string;
   walletName: string;
-  createdAt: Date;
-}
-
-//! Why category name and not categoryId?
-export interface TransactionRequest {
-  description: string;
-  walletId: string;
+  categoryId: string;
+  categoryName: string;
+  userId: string;
   amount: number;
-  type: number;
-  categoryName?: string;
-  createdAt: string;
+  description?: string;
+  date?: Date;
+  type: string;
 }
 
-export interface Transactions {
-  transactions: Transaction[];
+export interface Investment extends TransactionBase {
+  type: "Investment";
 }
 
-export enum TransactionType {
-  Income = 1,
-  Expense = 2,
-  Investment = 3,
-  Transfer = 4,
+export interface Income extends TransactionBase {
+  type: "Income";
 }
+
+export interface Expense extends TransactionBase {
+  type: "Expense";
+}
+
+// You can also create a union type for all transaction types
+export type Transaction = Investment | Income | Expense;
