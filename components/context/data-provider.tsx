@@ -13,16 +13,28 @@ import useSWR from "swr";
 import { views } from "@/constants/table";
 import { getApiUrl } from "@/constants/url";
 
-const DataContext = createContext(null);
+interface DataContextType {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: Array<any>;
+  loading: boolean;
+  filter: {
+    name: string;
+    setFilter: React.Dispatch<React.SetStateAction<string>>;
+    onFilter: (categories: string[]) => void;
+  };
+  mutate: () => void;
+}
 
-type Props = {
+interface DataContextProviderProps {
   children: React.ReactNode;
-  id: string;
+  name: string;
   isNotRange?: boolean;
-};
+}
 
-export const DataContextProvider = (props: Props) => {
-  const { children, id, isNotRange = false } = props;
+const DataContext = createContext<DataContextType | null>(null);
+
+export const DataContextProvider = (props: DataContextProviderProps) => {
+  const { children, name, isNotRange = false } = props;
   const [filter, setFilter] = useState(views.thisMonth.key);
   const [categories, setCategories] = useState<string[]>([]);
 
@@ -30,7 +42,7 @@ export const DataContextProvider = (props: Props) => {
     data = [],
     mutate,
     isLoading,
-  } = useSWR(getApiUrl(filter, id, categories, isNotRange));
+  } = useSWR(getApiUrl(filter, name, categories, isNotRange));
 
   const onFilter = useCallback((categories: string[] = []) => {
     setCategories(categories);
@@ -46,15 +58,11 @@ export const DataContextProvider = (props: Props) => {
     [data, isLoading, filter, mutate, onFilter]
   );
 
-  return (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    <DataContext.Provider value={value as any}>{children}</DataContext.Provider>
-  );
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 };
 
 export const useData = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const context = useContext<any>(DataContext);
+  const context = useContext(DataContext);
   if (context === undefined) {
     throw new Error(`useData must be used within a DataContext.`);
   }

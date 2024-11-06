@@ -12,24 +12,39 @@ export const apiUrls = {
   },
   incomes: {
     create: "/incomes",
-    getIncomes: ({ from, to }: { from: string; to: string }) =>
-      `/incomes?from=${from}&to=${to}`,
+    getIncomes: ({
+      startDate,
+      endDate,
+    }: {
+      startDate: string;
+      endDate: string;
+    }) => `/incomes?startDate=${startDate}&endDate=${endDate}`,
     getById: (id: string) => `/incomes/${id}`,
     putById: (id: string) => `/incomes/${id}`,
     deleteById: (id: string) => `/incomes/${id}`,
   },
   expenses: {
     create: "/expenses",
-    getIncomes: ({ from, to }: { from: string; to: string }) =>
-      `/expenses?from=${from}&to=${to}`,
+    getExpenses: ({
+      startDate,
+      endDate,
+    }: {
+      startDate: string;
+      endDate: string;
+    }) => `/expenses?from=${startDate}&to=${endDate}`,
     getById: (id: string) => `/expenses/${id}`,
     putById: (id: string) => `/expenses/${id}`,
     deleteById: (id: string) => `/expenses/${id}`,
   },
   investments: {
     create: "/investments",
-    getIncomes: ({ from, to }: { from: string; to: string }) =>
-      `/investments?from=${from}&to=${to}`,
+    getInvestments: ({
+      startDate,
+      endDate,
+    }: {
+      startDate: string;
+      endDate: string;
+    }) => `/investments?from=${startDate}&to=${endDate}`,
     getById: (id: string) => `/investments/${id}`,
     putById: (id: string) => `/investments/${id}`,
     deleteById: (id: string) => `/investments/${id}`,

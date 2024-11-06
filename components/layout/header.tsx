@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "../ui/button";
-import DatePicker from "../datepicker";
 import { Separator } from "../ui/separator";
 import { useSidebar } from "../context/sidebar-provider";
+import DatePicker from "../datepicker";
 
 const MenuIcon = () => (
   <svg

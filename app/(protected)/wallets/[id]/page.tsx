@@ -1,6 +1,6 @@
 import AddTransaction from "@/components/Transaction/AddTransaction";
 import { getWalletById } from "@/app/actions/wallets";
-import LayoutHeader from "@/components/Layout/LayoutHeader";
+import LayoutHeader from "@/components/layout/header";
 import WalletSummary from "./summary";
 import { DataContextProvider } from "@/components/context/data-provider";
 import WalletTable from "./table";
