@@ -3,16 +3,14 @@ import {
   endOfWeek,
   startOfMonth,
   startOfWeek,
-  sub,
   subMonths,
   subWeeks,
 } from "date-fns";
 import { format } from "date-fns";
 import { views } from "./table";
-
 export const dateFormat: string = "yyyy-MM-dd";
 export const datePattern: string = "d{2}-d{2}-d{4}";
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getRangeDateForFilter = (filter: any) => {
   const dateObj = new Date();
   if (filter === views.pastWeek.key) {

@@ -55,7 +55,7 @@ export default function ForgotPassword() {
             Enviar Instrucciones
           </Button>
           <div className="mt-4 text-sm text-center">
-            <Link href="/auth/login" className="text-blue-500 hover:underline">
+            <Link href="/auth/signin" className="text-blue-500 hover:underline">
               Volver al inicio de sesión
             </Link>
           </div>

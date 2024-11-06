@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       await logout();
       setUser(null);
-      router.push("/auth/login");
+      router.push("/auth/signin");
     } catch (error) {
       console.error("Logout error:", error);
     } finally {

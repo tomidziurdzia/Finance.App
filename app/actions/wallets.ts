@@ -1,6 +1,7 @@
 "use server";
 
 import { TotalWallets, Wallet, Wallets } from "@/interfaces/walletInterface";
+import { apiUrls } from "@/lib/apiUrls";
 import fetchWithAuth from "@/lib/fetchWithAuth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
@@ -40,7 +41,7 @@ export async function getAllWallets(): Promise<Wallets> {
   }
 
   try {
-    const wallets = await fetchWithAuth(`${API_URL}/wallets`);
+    const wallets = await fetchWithAuth(`${API_URL}${apiUrls.wallets.getAll}`);
     setCachedData(cacheKey, wallets);
     return wallets;
   } catch (error) {
@@ -58,38 +59,13 @@ export async function getWalletById(id: string): Promise<Wallet> {
   }
 
   try {
-    const wallet = await fetchWithAuth(`${API_URL}/wallets/${id}`);
+    const wallet = await fetchWithAuth(
+      `${API_URL}${apiUrls.wallets.getById(id)}`
+    );
     setCachedData(cacheKey, wallet);
     return wallet;
   } catch (error) {
     console.error(`Error fetching wallet with id ${id}:`, error);
     throw error;
   }
-}
-
-export async function getWalletTotals(): Promise<TotalWallets> {
-  const cacheKey = "walletTotals";
-  const cachedTotals = getCachedData<TotalWallets>(cacheKey);
-
-  if (cachedTotals) {
-    return cachedTotals;
-  }
-
-  try {
-    const totals = await fetchWithAuth(`${API_URL}/wallets/totals`);
-    setCachedData(cacheKey, totals);
-    return totals;
-  } catch (error) {
-    console.error("Error fetching wallet totals:", error);
-    throw error;
-  }
-}
-
-export async function invalidateWalletCache() {
-  cache.delete("allWallets");
-  cache.delete("walletTotals");
-}
-
-export async function invalidateWalletByIdCache(id: string) {
-  cache.delete(`wallet_${id}`);
 }

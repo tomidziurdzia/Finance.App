@@ -8,7 +8,7 @@ export const apiUrls = {
   },
   auth: {
     signup: "/user/register",
-    singin: "/user/login",
+    signin: "/user/login",
   },
   incomes: {
     create: "/incomes",

@@ -8,9 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import RegisterForm from "@/components/Login/RegisterForm";
+import Form from "./form";
 
-export default function RegisterPage() {
+export default function SignUp() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4 lg:p-0">
       <div className="flex w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
@@ -24,12 +24,12 @@ export default function RegisterPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <RegisterForm />
+            <Form />
           </CardContent>
           <CardFooter className="mx-auto">
             <p className="text-sm text-secondary">
               Already have an account?{" "}
-              <Link href="/auth/login" className="font-medium text-gray-700">
+              <Link href="/auth/signin" className="font-medium text-gray-700">
                 Sign in
               </Link>
             </p>

@@ -26,7 +26,7 @@ export interface User {
 }
 
 export async function login(credentials: LoginCredentials): Promise<User> {
-  const response = await fetch(`${API_URL}/${apiUrls.auth.singin}`, {
+  const response = await fetch(`${API_URL}${apiUrls.auth.signin}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(credentials),
@@ -37,6 +37,8 @@ export async function login(credentials: LoginCredentials): Promise<User> {
   }
 
   const data = await response.json();
+
+  console.log(data);
 
   if (data.token) {
     const user: User = {
@@ -69,7 +71,7 @@ export async function login(credentials: LoginCredentials): Promise<User> {
 export async function logout() {
   cookies().delete("auth_token");
   cookies().delete("user");
-  redirect("/login");
+  redirect("/signin");
 }
 
 export async function register(

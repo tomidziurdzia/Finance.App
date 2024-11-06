@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Loading from "../Loading/Loading";
+import Loading from "../loading/loading";
 import AddForm from "./AddForm";
 import { getAllWallets } from "@/app/actions/wallets";
 import { getAllCategories } from "@/app/actions/category";

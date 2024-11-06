@@ -1,20 +1,12 @@
-import SummaryCard from "@/components/Card/SummaryCard";
+import SummaryCard from "@/components/card/summary-card";
 import { formatCurrency } from "@/lib/formatter";
 import { Banknote, Briefcase, PiggyBank, Wallet2 } from "lucide-react";
-import { getWalletTotals } from "../actions/wallets";
 import { cookies } from "next/headers";
 
 export default async function Summary() {
   const cookieStore = cookies();
   const userCookie = cookieStore.get("user");
   const user = userCookie ? JSON.parse(userCookie.value) : null;
-  const wallets = await getWalletTotals();
-
-  const totalBalance = wallets?.total;
-
-  const totalIncome = wallets.income;
-  const totalSpent = -wallets.expense;
-  const totalInvesments = -wallets.investment;
 
   return (
     <>
@@ -24,7 +16,7 @@ export default async function Summary() {
           icon={Wallet2}
           title="available balance"
           data={formatCurrency({
-            value: totalBalance,
+            value: 2,
             currency: user?.currency,
             locale: user?.locale,
           })}
@@ -35,7 +27,7 @@ export default async function Summary() {
           icon={Briefcase}
           title="total income"
           data={formatCurrency({
-            value: totalIncome,
+            value: 3,
             currency: user?.currency,
             locale: user?.locale,
           })}
@@ -47,7 +39,7 @@ export default async function Summary() {
           title="total spent"
           tooltip="Total of expenses + investments + subscriptions"
           data={formatCurrency({
-            value: totalSpent,
+            value: 4,
             currency: user?.currency,
             locale: user?.locale,
           })}
@@ -58,7 +50,7 @@ export default async function Summary() {
           icon={PiggyBank}
           title="total investment"
           data={formatCurrency({
-            value: totalInvesments,
+            value: 5,
             currency: user?.currency,
             locale: user?.locale,
           })}
