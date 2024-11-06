@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 
 export default function CardLoader({

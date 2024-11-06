@@ -2,7 +2,6 @@ import AddTransaction from "@/components/Transaction/AddTransaction";
 import { getWalletById } from "@/app/actions/wallets";
 import LayoutHeader from "@/components/layout/header";
 import WalletSummary from "./summary";
-import { DataContextProvider } from "@/components/context/data-provider";
 import WalletTable from "./table";
 
 export default async function WalletPage({
@@ -18,18 +17,16 @@ export default async function WalletPage({
   return (
     <>
       <LayoutHeader title={wallet.name} />
-      <DataContextProvider id={wallet.id}>
-        <div className="p-4 pt-4 w-full">
-          <WalletSummary
-            walletCurrency={wallet.currency}
-            totalBalance={wallet.total}
-            totalIncome={totalIncome}
-            totalExpense={totalExpense}
-            totalInvestment={totalInvestment}
-          />
-          <WalletTable {...wallet} />
-        </div>
-      </DataContextProvider>
+      <div className="p-4 pt-4 w-full">
+        <WalletSummary
+          walletCurrency={wallet.currency}
+          totalBalance={wallet.total}
+          totalIncome={totalIncome}
+          totalExpense={totalExpense}
+          totalInvestment={totalInvestment}
+        />
+        <WalletTable {...wallet} />
+      </div>
       <AddTransaction />
     </>
   );

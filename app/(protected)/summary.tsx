@@ -91,7 +91,7 @@ export default function Summary() {
             backgroundColor="bg-purple-100"
           />
           <SummaryCard
-            icon={Banknote}
+            icon={PiggyBank}
             title="total balance"
             tooltip="Total of expenses + investments + subscriptions"
             data={formatCurrency({

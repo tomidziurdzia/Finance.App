@@ -1,6 +1,6 @@
 "use server";
 
-import { TotalWallets, Wallet, Wallets } from "@/interfaces/walletInterface";
+import { Wallet, Wallets } from "@/interfaces/walletInterface";
 import { apiUrls } from "@/lib/apiUrls";
 import fetchWithAuth from "@/lib/fetchWithAuth";
 
