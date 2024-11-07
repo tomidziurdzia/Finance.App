@@ -17,8 +17,6 @@ export default function Summary() {
   const { user } = useUser();
   const { data, loading } = useOverview();
 
-  console.log(data);
-
   const totalIncome = data.incomes.reduce(
     (acc: number, { amount }) => Number(amount) + acc,
     0
