@@ -1,6 +1,6 @@
-import { Investment } from "@/interfaces/transactionInterface";
-import { apiUrls } from "@/lib/apiUrls";
-import fetchWithAuth from "@/lib/fetchWithAuth";
+import { Investment } from "interfaces/transactionInterface";
+import { apiUrls } from "lib/apiUrls";
+import fetchWithAuth from "lib/fetchWithAuth";
 import { format, parse, isValid } from "date-fns";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;

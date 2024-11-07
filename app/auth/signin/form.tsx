@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { login } from "@/app/actions/auth";
-import Loading from "@/components/loading/loading";
+import { Button } from "components/ui/button";
+import { Input } from "components/ui/input";
+import { Label } from "components/ui/label";
+import { login } from "app/actions/auth";
+import Loading from "components/loading/loading";
 
 export default function Form() {
   const router = useRouter();

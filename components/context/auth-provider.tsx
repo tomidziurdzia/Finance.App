@@ -1,10 +1,10 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { User } from "@/interfaces/userInterface";
-import { getCurrentUser, getToken } from "@/app/actions/auth";
+import { User } from "interfaces/userInterface";
+import { getCurrentUser, getToken } from "app/actions/auth";
 import { SWRConfig } from "swr";
-import fetcher from "@/lib/fetcher";
+import fetcher from "lib/fetcher";
 
 interface Session {
   token: string | null;

@@ -1,11 +1,11 @@
 "use client";
 
-import SummaryCard from "@/components/card/summary-card";
-import { useUser } from "@/components/context/auth-provider";
-import { useData } from "@/components/context/data-provider";
-import CardLoader from "@/components/loader/card";
-import { Transaction } from "@/interfaces/transactionInterface";
-import { formatCurrency } from "@/lib/formatter";
+import SummaryCard from "components/card/summary-card";
+import { useUser } from "components/context/auth-provider";
+import { useData } from "components/context/data-provider";
+import CardLoader from "components/loader/card";
+import { Transaction } from "interfaces/transactionInterface";
+import { formatCurrency } from "lib/formatter";
 import { Briefcase } from "lucide-react";
 
 export default function IncomeSummary() {

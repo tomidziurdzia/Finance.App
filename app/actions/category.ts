@@ -1,8 +1,8 @@
 "use server";
 
-import { Category } from "@/interfaces/categoryInterface";
-import { apiUrls } from "@/lib/apiUrls";
-import fetchWithAuth from "@/lib/fetchWithAuth";
+import { Category } from "interfaces/categoryInterface";
+import { apiUrls } from "lib/apiUrls";
+import fetchWithAuth from "lib/fetchWithAuth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 const CACHE_EXPIRATION = 5 * 60 * 1000;

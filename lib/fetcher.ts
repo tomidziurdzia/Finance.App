@@ -1,4 +1,4 @@
-import { getToken } from "@/app/actions/auth";
+import { getToken } from "app/actions/auth";
 
 export default async function fetcher<JSON>(
   input: RequestInfo,

@@ -4,7 +4,7 @@ import { DateRange } from "react-day-picker";
 
 import { useDate } from "./context/datepicker-provider";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { cn } from "@/lib/utils";
+import { cn } from "lib/utils";
 import { Button } from "./ui/button";
 import { Calendar } from "./ui/calendar";
 import {

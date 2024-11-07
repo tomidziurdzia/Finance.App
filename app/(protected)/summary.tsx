@@ -1,10 +1,10 @@
 "use client";
 
-import SummaryCard from "@/components/card/summary-card";
-import { useUser } from "@/components/context/auth-provider";
-import { useOverview } from "@/components/context/overview-provider";
-import CardLoader from "@/components/loader/card";
-import { formatCurrency } from "@/lib/formatter";
+import SummaryCard from "components/card/summary-card";
+import { useUser } from "components/context/auth-provider";
+import { useOverview } from "components/context/overview-provider";
+import CardLoader from "components/loader/card";
+import { formatCurrency } from "lib/formatter";
 import {
   Banknote,
   Briefcase,

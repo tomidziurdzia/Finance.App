@@ -1,11 +1,11 @@
 import { ThemeProvider } from "next-themes";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { SidebarContextProvider } from "@/components/context/sidebar-provider";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AuthProvider } from "@/components/context/auth-provider";
-import Sidebar from "@/components/sidebar/sidebar";
-import Header from "@/components/header/header";
+import { SidebarContextProvider } from "components/context/sidebar-provider";
+import { SidebarInset, SidebarProvider } from "components/ui/sidebar";
+import { AuthProvider } from "components/context/auth-provider";
+import Sidebar from "components/sidebar/sidebar";
+import Header from "components/header/header";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies();

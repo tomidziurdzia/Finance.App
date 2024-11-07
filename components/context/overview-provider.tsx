@@ -3,12 +3,12 @@
 import { createContext, useContext, ReactNode } from "react";
 import { format } from "date-fns";
 import useSWR, { KeyedMutator } from "swr";
-import { dateFormat } from "@/constants/date";
+import { dateFormat } from "constants/date";
 import { useDate } from "./datepicker-provider";
-import { Expense, Income, Investment } from "@/interfaces/transactionInterface";
-import { getIncomes } from "@/app/actions/income";
-import { getExpenses } from "@/app/actions/expense";
-import { getInvestments } from "@/app/actions/investment";
+import { Expense, Income, Investment } from "interfaces/transactionInterface";
+import { getIncomes } from "app/actions/income";
+import { getExpenses } from "app/actions/expense";
+import { getInvestments } from "app/actions/investment";
 
 interface OverviewData {
   expenses: Expense[];

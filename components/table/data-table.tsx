@@ -25,7 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Transaction } from "@/interfaces/transactionInterface";
+import { Transaction } from "interfaces/transactionInterface";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

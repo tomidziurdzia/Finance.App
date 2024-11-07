@@ -1,9 +1,9 @@
 "use client";
 
-import DataTableColumnHeader from "@/components/table/data-table-column-header";
-import { Button } from "@/components/ui/button";
-import { Transaction } from "@/interfaces/transactionInterface";
-import { formatCurrency, formatDate } from "@/lib/formatter";
+import DataTableColumnHeader from "components/table/data-table-column-header";
+import { Button } from "components/ui/button";
+import { Transaction } from "interfaces/transactionInterface";
+import { formatCurrency, formatDate } from "lib/formatter";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pencil, Trash2 } from "lucide-react";
 

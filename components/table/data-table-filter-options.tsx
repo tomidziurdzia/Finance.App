@@ -12,7 +12,7 @@ import {
   DropdownMenuContent,
   DropdownMenuRadioItem,
 } from "../ui/dropdown-menu";
-import { views } from "@/constants/table";
+import { views } from "constants/table";
 
 export default function DataTableFilterOptions({
   filter,

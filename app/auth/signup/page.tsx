@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "components/ui/card";
 import Form from "./form";
 
 export default function SignUp() {

@@ -3,14 +3,14 @@
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import { columns } from "./columns";
-import { useData } from "@/components/context/data-provider";
-import { useUser } from "@/components/context/auth-provider";
-import messages from "@/constants/messages";
-import { Transaction } from "@/interfaces/transactionInterface";
-import { lookup } from "@/lib/lookup";
-import DataTable from "@/components/table/data-table";
-import Add from "@/components/add-button";
-import { useCategories } from "@/hooks/use-categories";
+import { useUser } from "components/context/auth-provider";
+import messages from "constants/messages";
+import { Transaction } from "interfaces/transactionInterface";
+import { lookup } from "lib/lookup";
+import DataTable from "components/table/data-table";
+import Add from "components/add-button";
+import { useCategories } from "hooks/use-categories";
+import { useData } from "components/context/data-provider";
 
 export default function IncomeTable() {
   const [selected, setSelected] = useState({});

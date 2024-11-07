@@ -2,12 +2,12 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { apiUrls } from "@/lib/apiUrls";
+import { apiUrls } from "lib/apiUrls";
 import {
   LoginCredentials,
   RegisterCredentials,
   User,
-} from "@/interfaces/userInterface";
+} from "interfaces/userInterface";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 

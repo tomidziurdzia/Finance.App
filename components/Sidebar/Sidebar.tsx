@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar";
+} from "components/ui/sidebar";
 import Link from "next/link";
 import {
   Banknote,
@@ -20,13 +20,13 @@ import {
   ChevronDown,
   HandCoins,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "lib/utils";
 import { usePathname } from "next/navigation";
-import { useCategories } from "@/hooks/use-categories";
+import { useCategories } from "hooks/use-categories";
 import {
   groupCategoriesByParentType,
   GroupedCategories,
-} from "@/lib/groupCategories";
+} from "lib/groupCategories";
 import { useMemo, useState } from "react";
 import {
   Collapsible,

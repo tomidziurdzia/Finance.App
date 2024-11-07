@@ -1,4 +1,4 @@
-import { Category } from "@/interfaces/categoryInterface";
+import { Category } from "interfaces/categoryInterface";
 
 export interface GroupedCategories {
   [key: string]: Category[];

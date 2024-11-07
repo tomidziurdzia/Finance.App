@@ -10,10 +10,10 @@ import {
 
 import useSWR from "swr";
 
-import { views } from "@/constants/table";
-import { getApiUrl } from "@/constants/url";
-import { Transaction } from "@/interfaces/transactionInterface";
-import { useCategories } from "@/hooks/use-categories";
+import { views } from "constants/table";
+import { getApiUrl } from "constants/url";
+import { Transaction } from "interfaces/transactionInterface";
+import { useCategories } from "hooks/use-categories";
 
 interface DataContextType {
   data: Transaction[];

@@ -1,12 +1,12 @@
 import React from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "components/ui/skeleton";
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-} from "@/components/ui/sidebar";
+} from "components/ui/sidebar";
 
 interface SidebarCategoryLoaderProps {
   groups?: number;

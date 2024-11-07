@@ -1,5 +1,5 @@
-import { DataContextProvider } from "@/components/context/data-provider";
-import LayoutHeader from "@/components/layout/header";
+import { DataContextProvider } from "components/context/data-provider";
+import LayoutHeader from "components/layout/header";
 import IncomeSummary from "./summary";
 import IncomeTable from "./table";
 
