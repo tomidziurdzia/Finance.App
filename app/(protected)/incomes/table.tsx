@@ -55,6 +55,8 @@ export default function IncomeTable() {
     [data, categories]
   );
 
+  console.log(categories);
+
   const onDelete = useCallback(
     async (id: string) => {
       try {
