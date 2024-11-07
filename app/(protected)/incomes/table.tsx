@@ -30,6 +30,7 @@ export default function IncomeTable() {
   const onDelete = useCallback(
     async (id: string) => {
       try {
+        console.log(id);
         // await deleteIncome(id);
         toast.success(messages.deleted);
         mutate();

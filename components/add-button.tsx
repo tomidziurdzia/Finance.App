@@ -17,12 +17,12 @@ type AddProps = {
 };
 
 export default function Add({
-  mutate,
-  type,
+  // mutate,
+  // type,
   selected = {},
-  onHide,
-  onLookup,
-}: AddProps) {
+}: // onHide,
+// onLookup,
+AddProps) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {

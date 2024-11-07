@@ -15,6 +15,10 @@ interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
 }
 
+interface ColumnMeta {
+  isTogglable?: boolean;
+}
+
 export default function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
@@ -50,10 +54,11 @@ export default function DataTableViewOptions<TData>({
       <DropdownMenuContent align="end" className="w-[150px]">
         {columns
           .filter((column) => {
+            const meta = column.columnDef.meta as ColumnMeta;
             return (
               typeof column.accessorFn !== "undefined" &&
               column.getCanHide() &&
-              column.columnDef.meta?.isTogglable !== false
+              meta?.isTogglable !== false
             );
           })
           .map((column) => {
