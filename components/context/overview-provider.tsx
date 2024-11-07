@@ -40,7 +40,6 @@ const useOverviewData = (
     getIncomes({ startDate, endDate })
   );
 
-  // Update these for expenses and investments similarly
   const {
     data: expensesData = [],
     isLoading: isExpenseLoading,
