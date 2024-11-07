@@ -12,10 +12,10 @@ import useSWR from "swr";
 
 import { views } from "@/constants/table";
 import { getApiUrl } from "@/constants/url";
+import { Transaction } from "@/interfaces/transactionInterface";
 
 interface DataContextType {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: Array<any>;
+  data: Transaction[];
   loading: boolean;
   filter: {
     name: string;
@@ -42,7 +42,7 @@ export const DataContextProvider = (props: DataContextProviderProps) => {
     data = [],
     mutate,
     isLoading,
-  } = useSWR(getApiUrl(filter, name, categories, isNotRange));
+  } = useSWR<Transaction[]>(getApiUrl(filter, name, categories, isNotRange));
 
   const onFilter = useCallback((categories: string[] = []) => {
     setCategories(categories);
@@ -61,9 +61,9 @@ export const DataContextProvider = (props: DataContextProviderProps) => {
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 };
 
-export const useData = () => {
+export const useData = (): DataContextType => {
   const context = useContext(DataContext);
-  if (context === undefined) {
+  if (context === null) {
     throw new Error(`useData must be used within a DataContext.`);
   }
   return context;

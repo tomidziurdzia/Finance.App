@@ -1,7 +1,18 @@
+import { DataContextProvider } from "@/components/context/data-provider";
+import LayoutHeader from "@/components/layout/header";
+import IncomeSummary from "./summary";
+import IncomeTable from "./table";
+
 export default function Page() {
   return (
-    <div>
-      <h1>Hello Page</h1>
-    </div>
+    <>
+      <LayoutHeader title="income" />
+      <DataContextProvider name="incomes">
+        <div className="w-full overflow-x-auto p-4 pt-3">
+          <IncomeSummary />
+          <IncomeTable />
+        </div>
+      </DataContextProvider>
+    </>
   );
 }

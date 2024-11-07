@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
-
 import {
   ColumnFiltersState,
   RowData,
@@ -32,35 +30,40 @@ import { Transaction } from "@/interfaces/transactionInterface";
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface TableMeta<TData extends RowData> {
-    onDelete: (id: any) => void;
-    onEdit: (data: any) => void;
-    onChange?: (data: any) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    user: any;
+    onDelete: (id: string) => void;
+    onEdit: (data: Transaction) => void;
+    onChange?: (data: Transaction) => void;
   }
 }
 
 type DataTableProps = {
   data: Array<Transaction>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: Array<any>;
   loading: boolean;
   filter: {
     name: string;
     setFilter: (filter: string) => void;
-    onFilter: (categories: any) => void;
+    onFilter: (categories: string[]) => void;
   };
   options: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    user: any;
     onDelete: (id: string) => void;
-    onEdit: (data: any) => void;
-    onChange?: (data: any) => void;
+    onEdit: (data: Transaction) => void;
+    onChange?: (data: Transaction) => void;
   };
-  hideViewOptions?: boolean | undefined;
-  categories: {
+  filename: string;
+  hideViewOptions?: boolean;
+  categories?: {
     categoryId: string;
     categoryName: string;
   }[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function DataTable<TData, TValue>(props: DataTableProps) {
+export default function DataTable(props: DataTableProps) {
   const {
     data,
     columns,
@@ -92,7 +95,7 @@ export default function DataTable<TData, TValue>(props: DataTableProps) {
   return (
     <div className="mb-8">
       <DataTableToolbar
-        categories={categories}
+        categories={categories || []}
         filter={filter}
         loading={loading}
         table={table}
@@ -103,21 +106,19 @@ export default function DataTable<TData, TValue>(props: DataTableProps) {
           <TableHeader className="bg-muted">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      className="text-black dark:text-white"
-                      key={header.id}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    className="text-black dark:text-white"
+                    key={header.id}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>

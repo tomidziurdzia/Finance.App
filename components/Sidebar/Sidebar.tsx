@@ -75,8 +75,6 @@ export default function Sidebar() {
     );
   };
 
-  console.log(groupedCategories);
-
   return (
     <SidebarComponent>
       <SidebarHeader className="relative p-4">

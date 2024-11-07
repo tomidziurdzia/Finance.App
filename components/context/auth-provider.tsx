@@ -3,6 +3,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@/interfaces/userInterface";
 import { getCurrentUser, getToken } from "@/app/actions/auth";
+import { SWRConfig } from "swr";
+import fetcher from "@/lib/fetcher";
 
 interface Session {
   token: string | null;
@@ -66,7 +68,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearError,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      <SWRConfig value={{ fetcher }}>{children}</SWRConfig>
+    </AuthContext.Provider>
+  );
 }
 
 export function useUser() {
