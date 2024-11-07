@@ -1,8 +1,7 @@
 "use client";
 
-import { useCallback, useState, useMemo } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
-
 import { columns } from "./columns";
 import { useData } from "@/components/context/data-provider";
 import { useUser } from "@/components/context/auth-provider";
@@ -13,54 +12,24 @@ import DataTable from "@/components/table/data-table";
 import Add from "@/components/add-button";
 import { useCategories } from "@/hooks/use-categories";
 
-interface Category {
-  id: string;
-  name: string;
-  type: string;
-}
-
-interface DataTableCategory {
-  categoryId: string;
-  categoryName: string;
-}
-
-function getCategoriesWithIncomeData(
-  incomeData: Transaction[],
-  categories: Category[]
-): DataTableCategory[] {
-  const incomeCategoryIds = new Set(
-    incomeData
-      ?.filter((item) => item.type === "Income")
-      .map((item) => item.categoryId)
-  );
-
-  const categoriesWithIncome = categories
-    ?.filter((category) => incomeCategoryIds.has(category.id))
-    .map((category) => ({
-      categoryId: category.id,
-      categoryName: category.name,
-    }));
-
-  return categoriesWithIncome;
-}
-
 export default function IncomeTable() {
-  const [selected, setSelected] = useState<Transaction | object>({});
+  const [selected, setSelected] = useState({});
   const { data, loading, filter, mutate } = useData();
-  const { categories } = useCategories();
   const { user } = useUser();
+  const { categories } = useCategories();
 
-  const categoriesFiltered = useMemo(
-    () => getCategoriesWithIncomeData(data, categories!),
-    [data, categories]
-  );
-
-  console.log(categories);
+  const filteredCategories =
+    categories?.filter(
+      (category) => category.type === "Transfer" || category.type === "Income"
+    ) || [];
+  const mappedCategories = filteredCategories.map((category) => ({
+    categoryId: category.id,
+    categoryName: category.name,
+  }));
 
   const onDelete = useCallback(
     async (id: string) => {
       try {
-        console.log(id);
         // await deleteIncome(id);
         toast.success(messages.deleted);
         mutate();
@@ -93,7 +62,7 @@ export default function IncomeTable() {
         data={data}
         loading={loading}
         filename="Income"
-        categories={categoriesFiltered}
+        categories={mappedCategories}
       />
       <Add
         onHide={onHide}

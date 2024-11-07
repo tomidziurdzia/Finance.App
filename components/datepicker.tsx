@@ -2,10 +2,10 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { addDays, format, startOfMonth, startOfYear, subDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 
-import { Button } from "./ui/button";
-import { Popover, PopoverTrigger } from "./ui/popover";
+import { useDate } from "./context/datepicker-provider";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { cn } from "@/lib/utils";
-import { PopoverContent } from "@radix-ui/react-popover";
+import { Button } from "./ui/button";
 import { Calendar } from "./ui/calendar";
 import {
   Select,
@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { useDate } from "./context/datepicker-provider";
 
 export default function DatePicker() {
   const { date, onChange } = useDate();

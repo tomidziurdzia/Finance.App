@@ -26,7 +26,14 @@ export const getApiUrl = (
   const startDateFormatted = start ? formatDate(start) : "";
   const endDateFormatted = end ? formatDate(end) : "";
 
-  return `${API_URL}/${apiPath}?startDate=${startDateFormatted}&endDate=${endDateFormatted}&categories=${categories?.join(
-    ","
-  )}`;
+  let url = `${API_URL}/${apiPath}?startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
+
+  if (categories.length > 0) {
+    const categoryParams = categories
+      .map((id) => `categoryIds=${id}`)
+      .join("&");
+    url += `&${categoryParams}`;
+  }
+
+  return url;
 };

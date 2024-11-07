@@ -56,7 +56,7 @@ export default function DataTableToolbar<TData>(
           }
           className="mr-1.5 h-8 w-full sm:w-[200px] md:w-[300px]"
         />
-        {categories?.length && table.getColumn("categoryName") ? (
+        {table.getColumn("categoryName") ? (
           <DataTableFacetedFilter
             disabled={loading}
             column={table.getColumn("categoryName")}

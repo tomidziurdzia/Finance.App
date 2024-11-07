@@ -99,21 +99,15 @@ export default function DataTableFacetedFilter<TData, TValue>({
                     key={option.categoryId}
                     onSelect={() => {
                       if (isSelected) {
-                        selectedValues.delete(option.categoryId);
+                        selectedValues.delete(option.categoryName);
                       } else {
-                        selectedValues.add(option.categoryId);
+                        selectedValues.add(option.categoryName);
                       }
                       const filterValues = Array.from(selectedValues);
-                      const filterNames = filterValues.map((id) => {
-                        const category = options.find(
-                          (cat) => cat.categoryId === id
-                        );
-                        return category ? category.categoryName : "";
-                      });
                       column?.setFilterValue(
-                        filterNames.length ? filterNames : undefined
+                        filterValues.length ? filterValues : undefined
                       );
-                      onFilter?.(filterNames.length ? filterNames : []);
+                      onFilter?.(filterValues.length ? filterValues : []);
                     }}
                   >
                     <div

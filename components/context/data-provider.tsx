@@ -13,6 +13,7 @@ import useSWR from "swr";
 import { views } from "@/constants/table";
 import { getApiUrl } from "@/constants/url";
 import { Transaction } from "@/interfaces/transactionInterface";
+import { useCategories } from "@/hooks/use-categories";
 
 interface DataContextType {
   data: Transaction[];
@@ -37,12 +38,27 @@ export const DataContextProvider = (props: DataContextProviderProps) => {
   const { children, name, isNotRange = false } = props;
   const [filter, setFilter] = useState(views.thisMonth.key);
   const [categories, setCategories] = useState<string[]>([]);
+  const { categories: categoriesToFilter } = useCategories();
+  const uniqueCategoriesMap = new Map();
+
+  categoriesToFilter?.forEach((item) => {
+    uniqueCategoriesMap.set(item.name, {
+      categoryId: item.id,
+      categoryName: item.name,
+    });
+  });
+
+  const selectedCategoryIds = categories
+    .map((name) => uniqueCategoriesMap.get(name)?.categoryId)
+    .filter((id): id is string => id !== undefined);
 
   const {
     data = [],
     mutate,
     isLoading,
-  } = useSWR<Transaction[]>(getApiUrl(filter, name, categories, isNotRange));
+  } = useSWR<Transaction[]>(
+    getApiUrl(filter, name, selectedCategoryIds, isNotRange)
+  );
 
   const onFilter = useCallback((categories: string[] = []) => {
     setCategories(categories);
