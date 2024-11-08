@@ -1,4 +1,4 @@
-import { Income } from "interfaces/transactionInterface";
+import { Income, NewTransaction } from "interfaces/transactionInterface";
 import { apiUrls } from "lib/apiUrls";
 import fetchWithAuth from "lib/fetchWithAuth";
 import { format, parse, isValid } from "date-fns";
@@ -35,4 +35,13 @@ export async function getIncomes(params: {
     console.error("Error fetching incomes:", error);
     throw error;
   }
+}
+
+export async function createIncome(data: NewTransaction): Promise<Income> {
+  const income = await fetchWithAuth(`${API_URL}${apiUrls.incomes.create}`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  return income;
 }
