@@ -1,28 +1,36 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
-
-import { PlusIcon } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { PlusIcon, User, Settings, TrendingUp } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "components/ui/tooltip";
+import { Button } from "components/ui/button";
+import AddIncome from "./add/income";
 
 type TypeProps = "expenses" | "income" | "investments" | "subscriptions";
 
 type AddProps = {
-  mutate?: any;
+  mutate: () => void;
   type?: TypeProps;
-  selected?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  selected?: Record<string, any>;
   onHide?: () => void;
   onLookup?: (name: string) => void;
 };
 
+const AddExpense = ({ show, selected, mutate, onHide, lookup }: any) => (
+  <div>{/* Implement AddExpense component */}</div>
+);
+const AddInvestments = ({ show, selected, mutate, onHide, lookup }: any) => (
+  <div>{/* Implement AddInvestments component */}</div>
+);
+
 export default function Add({
-  // mutate,
-  // type,
+  mutate,
+  type,
   selected = {},
-}: // onHide,
-// onLookup,
-AddProps) {
+  onHide,
+  onLookup,
+}: AddProps) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -31,26 +39,55 @@ AddProps) {
     }
   }, [selected.id]);
 
+  const handleAddClick = (newType: TypeProps) => {
+    setShow(true);
+    if (type !== newType && onHide) {
+      onHide();
+    }
+  };
+
   return (
     <>
-      <Tooltip>
+      <Tooltip defaultOpen>
         <TooltipTrigger asChild>
-          <button
-            className="z-100 fixed bottom-[20px] right-[20px] flex h-[56px] w-[56px] items-center justify-between rounded-full bg-blue-600 p-[12px] text-sm font-medium uppercase text-white shadow-lg hover:bg-blue-700 sm:h-[48px] sm:w-[48px]"
-            onClick={() => {
-              setShow(!show);
-            }}
-          >
-            <PlusIcon className="h-12 w-12" />
-          </button>
+          <div className="z-100 fixed bottom-[20px] right-[20px] h-[56px] w-[56px] rounded-full bg-[#C6F133] p-0 sm:h-[48px] sm:w-[48px] flex items-center justify-center">
+            <PlusIcon className="h-6 w-6 text-[#3f3f47]" />
+          </div>
         </TooltipTrigger>
         <TooltipContent
-          className="mb-1 mr-1"
-          hideWhenDetached
-          side="top"
-        ></TooltipContent>
+          side="left"
+          align="end"
+          className="w-40 bg-transparent p-0"
+        >
+          <div className="flex flex-col space-y-2">
+            <Button
+              variant="ghost"
+              className="w-full justify-start bg-[#C6F133] hover:bg-[#d4f55b] text-[#3f3f47]"
+              onClick={() => handleAddClick("income")}
+            >
+              <User className="mr-2 h-4 w-4" />
+              Income
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-full justify-start bg-[#C6F133] hover:bg-[#d4f55b] text-[#3f3f47]"
+              onClick={() => handleAddClick("expenses")}
+            >
+              <Settings className="mr-2 h-4 w-4" />
+              Expense
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-full justify-start bg-[#C6F133] hover:bg-[#d4f55b] text-[#3f3f47]"
+              onClick={() => handleAddClick("investments")}
+            >
+              <TrendingUp className="mr-2 h-4 w-4" />
+              Investment
+            </Button>
+          </div>
+        </TooltipContent>
       </Tooltip>
-      {/* {type === "expenses" ? (
+      {type === "expenses" && (
         <AddExpense
           lookup={(value: string) => {
             if (onLookup) return onLookup(value);
@@ -63,8 +100,8 @@ AddProps) {
             setShow(false);
           }}
         />
-      ) : null}
-      {type === "income" ? (
+      )}
+      {type === "income" && (
         <AddIncome
           lookup={(value: string) => {
             if (onLookup) return onLookup(value);
@@ -77,8 +114,8 @@ AddProps) {
             setShow(false);
           }}
         />
-      ) : null}
-      {type === "investments" ? (
+      )}
+      {type === "investments" && (
         <AddInvestments
           lookup={(value: string) => {
             if (onLookup) return onLookup(value);
@@ -91,7 +128,7 @@ AddProps) {
             setShow(false);
           }}
         />
-      ) : null} */}
+      )}
     </>
   );
 }

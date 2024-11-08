@@ -25,3 +25,11 @@ export interface Expense extends TransactionBase {
 
 // You can also create a union type for all transaction types
 export type Transaction = Investment | Income | Expense;
+
+export interface NewTransaction {
+  walletId: string;
+  categoryId: string;
+  amount: number;
+  description: string;
+  date: Date;
+}
