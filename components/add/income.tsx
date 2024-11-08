@@ -38,7 +38,6 @@ const initialState = {
   category: "",
   date: "",
   name: "",
-  notes: "",
   amount: "",
   wallet: "",
   autocomplete: [],
@@ -251,23 +250,6 @@ export default function AddIncome({
               </select>
             </div>
           </div>
-          <div>
-            <Label className="block">
-              Notes{" "}
-              <span className="text-center text-sm text-muted-foreground">
-                (optional)
-              </span>
-            </Label>
-            <Input
-              className="mt-2"
-              onChange={(event) =>
-                setState({ ...state, notes: event.target.value })
-              }
-              value={state.notes}
-              maxLength={60}
-            />
-          </div>
-
           <Button disabled={loading} className="mt-1.5" type="submit">
             {loading ? (
               <CircleLoader />

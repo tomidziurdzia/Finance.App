@@ -17,12 +17,12 @@ type AddProps = {
   onLookup?: (name: string) => void;
 };
 
-const AddExpense = ({ show, selected, mutate, onHide, lookup }: any) => (
-  <div>{/* Implement AddExpense component */}</div>
-);
-const AddInvestments = ({ show, selected, mutate, onHide, lookup }: any) => (
-  <div>{/* Implement AddInvestments component */}</div>
-);
+// const AddExpense = ({ show, selected, mutate, onHide, lookup }: any) => (
+//   <div>{/* Implement AddExpense component */}</div>
+// );
+// const AddInvestments = ({ show, selected, mutate, onHide, lookup }: any) => (
+//   <div>{/* Implement AddInvestments component */}</div>
+// );
 
 export default function Add({
   mutate,
@@ -87,7 +87,7 @@ export default function Add({
           </div>
         </TooltipContent>
       </Tooltip>
-      {type === "expenses" && (
+      {/* {type === "expenses" && (
         <AddExpense
           lookup={(value: string) => {
             if (onLookup) return onLookup(value);
@@ -100,7 +100,7 @@ export default function Add({
             setShow(false);
           }}
         />
-      )}
+      )} */}
       {type === "income" && (
         <AddIncome
           lookup={(value: string) => {
@@ -115,7 +115,7 @@ export default function Add({
           }}
         />
       )}
-      {type === "investments" && (
+      {/* {type === "investments" && (
         <AddInvestments
           lookup={(value: string) => {
             if (onLookup) return onLookup(value);
@@ -128,7 +128,7 @@ export default function Add({
             setShow(false);
           }}
         />
-      )}
+      )} */}
     </>
   );
 }
