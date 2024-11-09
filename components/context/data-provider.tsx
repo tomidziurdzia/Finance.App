@@ -38,7 +38,7 @@ export const DataContextProvider = (props: DataContextProviderProps) => {
   const { children, name, isNotRange = false } = props;
   const [filter, setFilter] = useState(views.thisMonth.key);
   const [categories, setCategories] = useState<string[]>([]);
-  const { categories: categoriesToFilter } = useCategories();
+  const { categoriesToFilter } = useCategories();
   const uniqueCategoriesMap = new Map();
 
   categoriesToFilter?.forEach((item) => {

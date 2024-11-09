@@ -22,9 +22,9 @@ import {
 } from "components/ui/dialog";
 import { useWallets } from "hooks/use-wallets";
 import { NewTransaction } from "interfaces/transactionInterface";
-import { createIncome } from "app/actions/income";
+import { createExpense } from "app/actions/expense";
 
-interface AddIncome {
+interface AddExpense {
   show: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   selected: any;
@@ -48,13 +48,13 @@ type CategoryItem = {
   name: string;
 };
 
-export default function AddIncome({
+export default function AddExpense({
   show,
   onHide,
   mutate,
   selected,
   lookup,
-}: AddIncome) {
+}: AddExpense) {
   const { user } = useUser();
   const todayDate = format(new Date(), dateFormat);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,8 +69,8 @@ export default function AddIncome({
 
     const result: { [key: string]: CategoryItem[] } = {};
 
-    if (categories.income) {
-      result.income = Object.entries(categories.income).flatMap(
+    if (categories.expense) {
+      result.expense = Object.entries(categories.expense).flatMap(
         ([parentType, items]) => items.map((item) => ({ ...item, parentType }))
       );
     }
@@ -110,7 +110,7 @@ export default function AddIncome({
       setLoading(true);
       const isEditing = selected?.id;
       if (isEditing) {
-        // await editIncome(state);
+        // await editExpense(state);
       } else {
         const newData: NewTransaction = {
           walletId: state.wallet,
@@ -120,9 +120,9 @@ export default function AddIncome({
           date: state.date,
         };
 
-        await createIncome(newData);
+        await createExpense(newData);
 
-        // await addIncome(state);
+        // await addExpense(state);
       }
       setLoading(false);
       toast.success(isEditing ? messages.updated : messages.success);
@@ -139,7 +139,7 @@ export default function AddIncome({
     <Dialog open={show} onOpenChange={onHide}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{`${selected.id ? "Edit" : "Add"} Income`}</DialogTitle>
+          <DialogTitle>{`${selected.id ? "Edit" : "Add"} Expense`}</DialogTitle>
         </DialogHeader>
         <form
           className="md:[420px] grid w-full grid-cols-1 items-center gap-3"

@@ -12,7 +12,7 @@ import Add from "components/add-button";
 import { useCategories } from "hooks/use-categories";
 import { useData } from "components/context/data-provider";
 
-export default function IncomeTable() {
+export default function InvestmentTable() {
   const [selected, setSelected] = useState({});
   const { data, loading, filter, mutate } = useData();
   const { user } = useUser();
@@ -35,7 +35,7 @@ export default function IncomeTable() {
     async (id: string) => {
       try {
         console.log(id);
-        // await deleteIncome(id);
+        // await deleteInvestment(id);
         toast.success(messages.deleted);
         mutate();
       } catch {
@@ -66,7 +66,7 @@ export default function IncomeTable() {
         columns={columns}
         data={data}
         loading={loading}
-        filename="Income"
+        filename="Investment"
         categories={mappedCategories}
       />
       <Add
@@ -74,7 +74,7 @@ export default function IncomeTable() {
         onLookup={onLookup}
         selected={selected}
         mutate={mutate}
-        type="income"
+        type="investments"
       />
     </>
   );

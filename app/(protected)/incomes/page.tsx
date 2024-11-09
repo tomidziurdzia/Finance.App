@@ -8,7 +8,7 @@ export default function Page() {
     <>
       <LayoutHeader title="income" />
       <DataContextProvider name="incomes">
-        <div className="w-full overflow-x-auto p-4 pt-3">
+        <div className="w-full overflow-x-auto p-4">
           <IncomeSummary />
           <IncomeTable />
         </div>
