@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -7,9 +8,7 @@ type AutoCompleteListProps = {
   searchTerm?: string;
   show: boolean;
   onHide: () => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick: (datum: any) => void;
 };
 
@@ -39,7 +38,7 @@ export default function AutoCompleteList({
     if (show) {
       setIsVisible(true);
     } else {
-      const timer = setTimeout(() => setIsVisible(false), 200); // Match this with your transition duration
+      const timer = setTimeout(() => setIsVisible(false), 200);
       return () => clearTimeout(timer);
     }
   }, [show]);
@@ -58,16 +57,15 @@ export default function AutoCompleteList({
     >
       {data.length > 0 &&
         data.map((datum) => {
-          const { name: datumName, id } = datum;
-          const name = datumName.toLowerCase();
+          const { description: datumName, id } = datum;
+          const name = datumName?.toLowerCase();
           let string, highlightedText, endString;
-          const nameIndex = name.indexOf(searchTerm);
+          const nameIndex = name?.indexOf(searchTerm?.toLowerCase());
 
-          console.log(name);
-          if (searchTerm.length) {
-            string = datumName.substr(0, nameIndex);
-            endString = datumName.substr(nameIndex + searchTerm.length);
-            highlightedText = datumName.substr(nameIndex, searchTerm.length);
+          if (searchTerm.length && nameIndex !== -1) {
+            string = datumName?.substr(0, nameIndex);
+            highlightedText = datumName?.substr(nameIndex, searchTerm.length);
+            endString = datumName?.substr(nameIndex + searchTerm.length);
           }
           return (
             <Button
@@ -76,14 +74,14 @@ export default function AutoCompleteList({
               key={id}
               onClick={() => onClick(datum)}
             >
-              {searchTerm.length ? (
+              {searchTerm.length && nameIndex !== -1 ? (
                 <span>
                   {string}
                   <span className="font-semibold">{highlightedText}</span>
                   {endString}
                 </span>
               ) : (
-                name
+                datumName
               )}
             </Button>
           );

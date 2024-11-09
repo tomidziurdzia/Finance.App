@@ -1,27 +1,45 @@
-import textFilter from "text-filter";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const lookup = ({
   data,
   name,
-  fields = ["name"],
+  fields = ["name", "description", "categoryName"],
 }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
-  name: string;
+  data: any[];
+  name: {
+    name: string;
+  };
   fields?: string[];
-}) => {
-  const result = data.filter(textFilter({ query: name, fields }));
-  if (result.length)
-    return Object.values(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}): any[] => {
+  if (!data || data.length === 0) {
+    return [];
+  }
+
+  const filter = (item: any) => {
+    const searchTerm = name.name?.toLowerCase();
+    return fields.some((field) => {
+      const value = item[field];
+      return (
+        typeof value === "string" && value.toLowerCase().includes(searchTerm)
+      );
+    });
+  };
+
+  const result = data.filter(filter);
+
+  if (result.length) {
+    const uniqueResults = Object.values(
       result.reduce((acc: any, datum: any) => {
-        const name = datum?.name?.toLowerCase();
-        if (!acc[name]) {
-          acc[name] = datum;
+        const itemName =
+          datum.name?.toLowerCase() || datum.categoryName?.toLowerCase();
+        if (itemName && !acc[itemName]) {
+          acc[itemName] = datum;
         }
         return acc;
       }, {})
     ).slice(0, 3);
-  return result;
+
+    return uniqueResults;
+  }
+
+  return [];
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -26,11 +27,9 @@ import { createExpense } from "app/actions/expense";
 
 interface AddExpense {
   show: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   selected: any;
   onHide: () => void;
   mutate: () => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   lookup: (value: any) => void;
 }
 
@@ -57,7 +56,6 @@ export default function AddExpense({
 }: AddExpense) {
   const { user } = useUser();
   const todayDate = format(new Date(), dateFormat);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [state, setState] = useState<any>({ ...initialState, date: todayDate });
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -91,19 +89,25 @@ export default function AddExpense({
     }
   }, [show]);
 
-  useEffect(
-    () =>
-      setState(selected.id ? selected : { ...initialState, date: todayDate }),
-    [selected, todayDate]
-  );
+  useEffect(() => {
+    setState(
+      selected.id
+        ? { ...selected, autocomplete: [] }
+        : { ...initialState, date: todayDate }
+    );
+  }, [selected, todayDate]);
 
   const onLookup = useMemo(() => {
-    const callbackHandler = (value: string) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      setState((prev: any) => ({ ...prev, autocomplete: lookup(value) }));
+    const callbackHandler = (value: object) => {
+      const allItems = [
+        ...Object.values(categories || {}).flat(),
+        ...(state.previousTransactions || []),
+      ];
+      const results = lookup({ data: allItems, name: value });
+      setState((prev: any) => ({ ...prev, autocomplete: results }));
     };
     return debounce(callbackHandler, 500);
-  }, [lookup]);
+  }, [categories, state.previousTransactions, lookup]);
 
   const onSubmit = async () => {
     try {
@@ -121,18 +125,20 @@ export default function AddExpense({
         };
 
         await createExpense(newData);
-
-        // await addExpense(state);
       }
       setLoading(false);
       toast.success(isEditing ? messages.updated : messages.success);
       if (mutate) mutate();
       onHide();
-      setState({ ...initialState });
+      setState({ ...initialState, date: todayDate });
     } catch {
       setLoading(false);
       toast.error(messages.error);
     }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setState((prev: any) => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -146,7 +152,6 @@ export default function AddExpense({
           onSubmit={(event) => {
             event.preventDefault();
             onSubmit();
-            if (!selected.id) setState({ ...initialState });
           }}
         >
           <div className="relative">
@@ -162,28 +167,28 @@ export default function AddExpense({
               autoComplete="off"
               onChange={({ target }) => {
                 const { value } = target;
-                if (value.length) {
-                  setState({ ...state, name: value, autocomplete: [] });
-                  if (value.length > 2) onLookup(value);
+                handleInputChange("name", value);
+                if (value.length > 2) {
+                  onLookup(value);
                 } else {
-                  setState({
-                    ...state,
-                    name: "",
-                    category: "",
-                    autocomplete: [],
-                  });
+                  setState((prev: any) => ({ ...prev, autocomplete: [] }));
                 }
               }}
-              value={state.name}
+              value={state.name || ""}
             />
             <AutoCompleteList
               onHide={() => {
-                setState({ ...state, autocomplete: [] });
+                setState((prev: any) => ({ ...prev, autocomplete: [] }));
               }}
-              data={state.autocomplete}
-              searchTerm={state.name.length > 2 ? state.name.toLowerCase() : ""}
-              onClick={({ name, category }) => {
-                setState({ ...state, name, category, autocomplete: [] });
+              data={state.autocomplete || []}
+              searchTerm={state.name?.length > 2 ? state.name : ""}
+              onClick={({ description: name }) => {
+                console.log(state.autocomplete);
+                setState((prev: any) => ({
+                  ...prev,
+                  name: name || "",
+                  autocomplete: [],
+                }));
               }}
               show={Boolean(state.autocomplete?.length)}
             />
@@ -206,9 +211,9 @@ export default function AddExpense({
                 min="0"
                 step="any"
                 onChange={(event) =>
-                  setState({ ...state, amount: event.target.value })
+                  handleInputChange("amount", event.target.value)
                 }
-                value={state.amount}
+                value={state.amount || ""}
               />
             </div>
             <div>
@@ -220,10 +225,10 @@ export default function AddExpense({
                 required
                 max={todayDate}
                 pattern={datePattern}
-                onChange={(event) => {
-                  setState({ ...state, date: event.target.value });
-                }}
-                value={state.date}
+                onChange={(event) =>
+                  handleInputChange("date", event.target.value)
+                }
+                value={state.date || ""}
               />
             </div>
           </div>
@@ -233,10 +238,10 @@ export default function AddExpense({
               <select
                 id="category"
                 className="mt-1.5 flex h-9 max-sm:h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                onChange={(event) => {
-                  setState({ ...state, category: event.target.value });
-                }}
-                value={state.category}
+                onChange={(event) =>
+                  handleInputChange("category", event.target.value)
+                }
+                value={state.category || ""}
                 required
               >
                 <option disabled value="">
@@ -263,10 +268,10 @@ export default function AddExpense({
               <select
                 id="wallet"
                 className="mt-1.5 flex h-9 max-sm:h-10 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                onChange={(event) => {
-                  setState({ ...state, wallet: event.target.value });
-                }}
-                value={state.wallet}
+                onChange={(event) =>
+                  handleInputChange("wallet", event.target.value)
+                }
+                value={state.wallet || ""}
                 required
               >
                 <option disabled value="">
