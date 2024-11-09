@@ -54,7 +54,7 @@ export default function ExpenseTable() {
   }, []);
 
   const onLookup = useCallback(
-    (name: string) => lookup({ data, name }),
+    (name: { name: string }) => lookup({ data, name }),
     [data]
   );
 

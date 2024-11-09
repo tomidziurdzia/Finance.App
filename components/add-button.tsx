@@ -16,7 +16,7 @@ type AddProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   selected?: Record<string, any>;
   onHide?: () => void;
-  onLookup?: (name: string) => void;
+  onLookup?: (name: { name: string }) => void;
 };
 
 export default function Add({
@@ -84,7 +84,7 @@ export default function Add({
       </Tooltip>
       {type === "expenses" && (
         <AddExpense
-          lookup={(value: string) => {
+          lookup={(value: { name: string }) => {
             if (onLookup) return onLookup(value);
           }}
           show={show}
@@ -98,7 +98,7 @@ export default function Add({
       )}
       {type === "income" && (
         <AddIncome
-          lookup={(value: string) => {
+          lookup={(value: { name: string }) => {
             if (onLookup) return onLookup(value);
           }}
           show={show}
@@ -112,7 +112,7 @@ export default function Add({
       )}
       {type === "investments" && (
         <AddInvestment
-          lookup={(value: string) => {
+          lookup={(value: { name: string }) => {
             if (onLookup) return onLookup(value);
           }}
           show={show}
