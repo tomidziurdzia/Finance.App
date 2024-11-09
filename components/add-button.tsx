@@ -5,8 +5,10 @@ import { PlusIcon, User, Settings, TrendingUp } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "components/ui/tooltip";
 import { Button } from "components/ui/button";
 import AddIncome from "./add/income";
+import AddExpense from "./add/expense";
+import AddInvestment from "./add/investment";
 
-type TypeProps = "expenses" | "income" | "investments" | "subscriptions";
+type TypeProps = "expenses" | "income" | "investments";
 
 type AddProps = {
   mutate: () => void;
@@ -16,13 +18,6 @@ type AddProps = {
   onHide?: () => void;
   onLookup?: (name: string) => void;
 };
-
-// const AddExpense = ({ show, selected, mutate, onHide, lookup }: any) => (
-//   <div>{/* Implement AddExpense component */}</div>
-// );
-// const AddInvestments = ({ show, selected, mutate, onHide, lookup }: any) => (
-//   <div>{/* Implement AddInvestments component */}</div>
-// );
 
 export default function Add({
   mutate,
@@ -87,7 +82,7 @@ export default function Add({
           </div>
         </TooltipContent>
       </Tooltip>
-      {/* {type === "expenses" && (
+      {type === "expenses" && (
         <AddExpense
           lookup={(value: string) => {
             if (onLookup) return onLookup(value);
@@ -100,7 +95,7 @@ export default function Add({
             setShow(false);
           }}
         />
-      )} */}
+      )}
       {type === "income" && (
         <AddIncome
           lookup={(value: string) => {
@@ -115,8 +110,8 @@ export default function Add({
           }}
         />
       )}
-      {/* {type === "investments" && (
-        <AddInvestments
+      {type === "investments" && (
+        <AddInvestment
           lookup={(value: string) => {
             if (onLookup) return onLookup(value);
           }}
@@ -128,7 +123,7 @@ export default function Add({
             setShow(false);
           }}
         />
-      )} */}
+      )}
     </>
   );
 }

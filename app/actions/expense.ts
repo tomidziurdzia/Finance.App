@@ -1,4 +1,4 @@
-import { Expense } from "interfaces/transactionInterface";
+import { Expense, NewTransaction } from "interfaces/transactionInterface";
 import { apiUrls } from "lib/apiUrls";
 import fetchWithAuth from "lib/fetchWithAuth";
 import { format, parse, isValid } from "date-fns";
@@ -35,4 +35,13 @@ export async function getExpenses(params: {
     console.error("Error fetching expenses:", error);
     throw error;
   }
+}
+
+export async function createExpense(data: NewTransaction): Promise<Expense> {
+  const expense = await fetchWithAuth(`${API_URL}${apiUrls.expenses.create}`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  return expense;
 }

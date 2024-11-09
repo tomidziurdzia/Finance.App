@@ -1,4 +1,4 @@
-import { Investment } from "interfaces/transactionInterface";
+import { Investment, NewTransaction } from "interfaces/transactionInterface";
 import { apiUrls } from "lib/apiUrls";
 import fetchWithAuth from "lib/fetchWithAuth";
 import { format, parse, isValid } from "date-fns";
@@ -35,4 +35,18 @@ export async function getInvestments(params: {
     console.error("Error fetching investments:", error);
     throw error;
   }
+}
+
+export async function createInvestment(
+  data: NewTransaction
+): Promise<Investment> {
+  const investment = await fetchWithAuth(
+    `${API_URL}${apiUrls.investments.create}`,
+    {
+      method: "POST",
+      body: JSON.stringify(data),
+    }
+  );
+
+  return investment;
 }
