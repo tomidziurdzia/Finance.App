@@ -6,6 +6,10 @@ export interface Category {
   parentType: string;
 }
 
+export interface Categories {
+  categories: Category[];
+}
+
 export enum CategoryType {
   Other = "Other",
   Income = "Income",

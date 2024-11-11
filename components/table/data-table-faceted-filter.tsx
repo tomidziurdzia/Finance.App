@@ -16,26 +16,25 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Separator } from "../ui/separator";
 import { cn } from "lib/utils";
+import { Category } from "interfaces/categoryInterface";
+import { Wallet } from "interfaces/walletInterface";
 
-interface DataTableFacetedFilter<TData, TValue> {
-  column?: Column<TData, TValue>;
+interface DataTableFacetedFilter<TData> {
+  column?: Column<TData, unknown>;
   title?: string;
   disabled?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onFilter?: (filterData: any) => void;
-  options: {
-    categoryId: string;
-    categoryName: string;
-  }[];
+  options?: Category[] | Wallet[];
 }
 
-export default function DataTableFacetedFilter<TData, TValue>({
+export default function DataTableFacetedFilter<TData>({
   column,
   disabled,
   title,
   options,
   onFilter,
-}: DataTableFacetedFilter<TData, TValue>) {
+}: DataTableFacetedFilter<TData>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
@@ -70,14 +69,14 @@ export default function DataTableFacetedFilter<TData, TValue>({
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.categoryName))
+                    ?.filter((option) => selectedValues.has(option.name))
                     .map((option) => (
                       <Badge
                         variant="secondary"
-                        key={option.categoryId}
+                        key={option.id}
                         className="whitespace-nowrap rounded-sm px-1 font-normal"
                       >
-                        {option.categoryName}
+                        {option.name}
                       </Badge>
                     ))
                 )}
@@ -92,16 +91,16 @@ export default function DataTableFacetedFilter<TData, TValue>({
           <CommandList>
             <CommandEmpty>No found.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => {
-                const isSelected = selectedValues.has(option.categoryName);
+              {options?.map((option) => {
+                const isSelected = selectedValues.has(option.name);
                 return (
                   <CommandItem
-                    key={option.categoryId}
+                    key={option.id}
                     onSelect={() => {
                       if (isSelected) {
-                        selectedValues.delete(option.categoryName);
+                        selectedValues.delete(option.name);
                       } else {
-                        selectedValues.add(option.categoryName);
+                        selectedValues.add(option.name);
                       }
                       const filterValues = Array.from(selectedValues);
                       column?.setFilterValue(
@@ -120,10 +119,10 @@ export default function DataTableFacetedFilter<TData, TValue>({
                     >
                       <CheckIcon className={cn("h-4 w-4")} />
                     </div>
-                    <span>{option.categoryName}</span>
-                    {facets?.get(option.categoryName) && (
+                    <span>{option.name}</span>
+                    {facets?.get(option.name) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
-                        {facets.get(option.categoryName)}
+                        {facets.get(option.name)}
                       </span>
                     )}
                   </CommandItem>

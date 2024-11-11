@@ -36,6 +36,13 @@ export default function DataTableViewOptions<TData>({
         id: "Category",
       };
     }
+
+    if (column.id === "walletName") {
+      return {
+        ...column,
+        id: "Wallet",
+      };
+    }
     return column;
   });
 
