@@ -11,12 +11,15 @@ import DataTable from "components/table/data-table";
 import Add from "components/add-button";
 import { useCategories } from "hooks/use-categories";
 import { useData } from "components/context/data-provider";
+import { useWallets } from "hooks/use-wallets";
+import { Category } from "interfaces/categoryInterface";
 
 export default function ExpenseTable() {
   const [selected, setSelected] = useState({});
   const { data, loading, filter, mutate } = useData();
   const { user } = useUser();
   const { categories } = useCategories();
+  const { wallets } = useWallets();
 
   const filteredCategories = useMemo(() => {
     const incomeCategories = categories?.income
@@ -26,10 +29,6 @@ export default function ExpenseTable() {
 
     return [...incomeCategories, ...transferCategories];
   }, [categories]);
-  const mappedCategories = filteredCategories.map((category) => ({
-    categoryId: category.id,
-    categoryName: category.name,
-  }));
 
   const onDelete = useCallback(
     async (id: string) => {
@@ -44,6 +43,9 @@ export default function ExpenseTable() {
     },
     [mutate]
   );
+
+  console.log(filteredCategories);
+  console.log(wallets);
 
   const onEdit = useCallback((data: Transaction) => {
     setSelected(data);
@@ -67,7 +69,8 @@ export default function ExpenseTable() {
         data={data}
         loading={loading}
         filename="Expense"
-        categories={mappedCategories}
+        categories={filteredCategories as unknown as Category[]}
+        wallets={wallets}
       />
       <Add
         onHide={onHide}

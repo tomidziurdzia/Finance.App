@@ -33,7 +33,6 @@ export default function Summary() {
   );
 
   const totalAvailable = totalIncome - totalExpense - totalInvestment;
-
   const totalBalance = totalAvailable + totalInvestment;
 
   return (

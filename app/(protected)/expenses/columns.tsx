@@ -62,6 +62,19 @@ export const columns: ColumnDef<Transaction>[] = [
     },
   },
   {
+    accessorKey: "walletName",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Wallet" />
+    ),
+    cell: ({ row }) => {
+      const wallet = row.getValue<string>("walletName");
+      return <div className="">{wallet}</div>;
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
     accessorKey: "type",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Type" />

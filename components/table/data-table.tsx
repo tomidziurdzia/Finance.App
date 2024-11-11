@@ -26,6 +26,8 @@ import {
   TableRow,
 } from "../ui/table";
 import { Transaction } from "interfaces/transactionInterface";
+import { Wallets } from "interfaces/walletInterface";
+import { Category } from "interfaces/categoryInterface";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -57,10 +59,8 @@ type DataTableProps = {
   };
   filename: string;
   hideViewOptions?: boolean;
-  categories?: {
-    categoryId: string;
-    categoryName: string;
-  }[];
+  categories?: Category[];
+  wallets?: Wallets;
 };
 
 export default function DataTable(props: DataTableProps) {
@@ -69,6 +69,7 @@ export default function DataTable(props: DataTableProps) {
     columns,
     loading,
     categories,
+    wallets,
     filter,
     options,
     hideViewOptions,
@@ -95,7 +96,8 @@ export default function DataTable(props: DataTableProps) {
   return (
     <div className="mb-8">
       <DataTableToolbar
-        categories={categories || []}
+        categories={categories!}
+        wallets={wallets}
         filter={filter}
         loading={loading}
         table={table}

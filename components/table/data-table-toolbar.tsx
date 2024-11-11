@@ -1,44 +1,47 @@
 "use client";
 
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { Table } from "@tanstack/react-table";
+import { Table, Column } from "@tanstack/react-table";
 
 import DataTableFacetedFilter from "./data-table-faceted-filter";
 import DataTableFilterOptions from "./data-table-filter-options";
 import DataTableViewOptions from "./data-table-view-options";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Wallets } from "interfaces/walletInterface";
+import { Category } from "interfaces/categoryInterface";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   className?: string;
   loading: boolean;
-  hideViewOptions?: boolean | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  hideViewOptions?: boolean;
   filter: {
     name: string;
     setFilter: (filter: string) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onFilter?: (filterData: any) => void;
   };
-  categories: {
-    categoryId: string;
-    categoryName: string;
-  }[];
+  categories: Category[];
+  wallets?: Wallets;
 }
 
-export default function DataTableToolbar<TData>(
-  props: DataTableToolbarProps<TData>
-) {
-  const {
-    table,
-    className,
-    loading,
-    categories,
-    filter,
-    hideViewOptions = false,
-  } = props;
+export default function DataTableToolbar<TData>({
+  table,
+  className,
+  loading,
+  categories,
+  wallets,
+  filter,
+  hideViewOptions = false,
+}: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+
+  const getTypedColumn = (
+    columnId: string
+  ): Column<TData, unknown> | undefined => {
+    return table.getColumn(columnId) as Column<TData, unknown> | undefined;
+  };
 
   return (
     <div
@@ -49,22 +52,31 @@ export default function DataTableToolbar<TData>(
           disabled={loading}
           placeholder="Filter by description"
           value={
-            (table.getColumn("description")?.getFilterValue() as string) ?? ""
+            (getTypedColumn("description")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("description")?.setFilterValue(event.target.value)
+            getTypedColumn("description")?.setFilterValue(event.target.value)
           }
           className="mr-1.5 h-8 w-full sm:w-[200px] md:w-[300px]"
         />
-        {table.getColumn("categoryName") ? (
-          <DataTableFacetedFilter
+        {getTypedColumn("categoryName") && (
+          <DataTableFacetedFilter<TData>
             disabled={loading}
-            column={table.getColumn("categoryName")}
+            column={getTypedColumn("categoryName")}
             title="Category"
             onFilter={filter.onFilter}
             options={categories}
           />
-        ) : null}
+        )}
+        {getTypedColumn("walletName") && (
+          <DataTableFacetedFilter<TData>
+            disabled={loading}
+            column={getTypedColumn("walletName")}
+            title="Wallet"
+            onFilter={filter.onFilter}
+            options={wallets?.wallets}
+          />
+        )}
         {isFiltered && (
           <Button
             variant="secondary"
@@ -84,12 +96,12 @@ export default function DataTableToolbar<TData>(
           loading ? "pointer-events-none opacity-50" : ""
         } grid w-full grid-flow-col gap-3 sm:w-auto`}
       >
-        {!hideViewOptions ? (
+        {!hideViewOptions && (
           <DataTableFilterOptions
-            setFilter={filter?.setFilter}
+            setFilter={filter.setFilter}
             filter={filter.name}
           />
-        ) : null}
+        )}
         <DataTableViewOptions table={table} />
       </div>
     </div>
