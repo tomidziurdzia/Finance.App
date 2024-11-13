@@ -44,9 +44,6 @@ export default function ExpenseTable() {
     [mutate]
   );
 
-  console.log(filteredCategories);
-  console.log(wallets);
-
   const onEdit = useCallback((data: Transaction) => {
     setSelected(data);
   }, []);
