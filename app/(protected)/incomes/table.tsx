@@ -11,12 +11,15 @@ import DataTable from "components/table/data-table";
 import Add from "components/add-button";
 import { useCategories } from "hooks/use-categories";
 import { useData } from "components/context/data-provider";
+import { useWallets } from "hooks/use-wallets";
+import { Category } from "interfaces/categoryInterface";
 
 export default function IncomeTable() {
   const [selected, setSelected] = useState({});
   const { data, loading, filter, mutate } = useData();
   const { user } = useUser();
   const { categories } = useCategories();
+  const { wallets } = useWallets();
 
   const filteredCategories = useMemo(() => {
     const incomeCategories = categories?.income
@@ -26,16 +29,12 @@ export default function IncomeTable() {
 
     return [...incomeCategories, ...transferCategories];
   }, [categories]);
-  const mappedCategories = filteredCategories.map((category) => ({
-    categoryId: category.id,
-    categoryName: category.name,
-  }));
 
   const onDelete = useCallback(
     async (id: string) => {
       try {
         console.log(id);
-        // await deleteIncome(id);
+        // await deleteExpense(id);
         toast.success(messages.deleted);
         mutate();
       } catch {
@@ -54,7 +53,7 @@ export default function IncomeTable() {
   }, []);
 
   const onLookup = useCallback(
-    (name: string) => lookup({ data, name }),
+    (name: { name: string }) => lookup({ data, name }),
     [data]
   );
 
@@ -66,8 +65,9 @@ export default function IncomeTable() {
         columns={columns}
         data={data}
         loading={loading}
-        filename="Income"
-        categories={mappedCategories}
+        filename="Expense"
+        categories={filteredCategories as unknown as Category[]}
+        wallets={wallets}
       />
       <Add
         onHide={onHide}
