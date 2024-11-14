@@ -26,7 +26,7 @@ import {
   TableRow,
 } from "../ui/table";
 import { Transaction } from "interfaces/transactionInterface";
-import { Wallets } from "interfaces/walletInterface";
+import { Wallet } from "interfaces/walletInterface";
 import { Category } from "interfaces/categoryInterface";
 
 declare module "@tanstack/react-table" {
@@ -60,7 +60,7 @@ type DataTableProps = {
   filename: string;
   hideViewOptions?: boolean;
   categories?: Category[];
-  wallets?: Wallets;
+  wallets?: Wallet[];
 };
 
 export default function DataTable(props: DataTableProps) {
