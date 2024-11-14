@@ -272,7 +272,7 @@ export default function AddIncome({
                 <option disabled value="">
                   Select a wallet
                 </option>
-                {wallets?.wallets.map((wallet) => (
+                {wallets?.map((wallet) => (
                   <option key={wallet.id} value={wallet.id}>
                     {wallet.name}
                   </option>

@@ -13,13 +13,7 @@ import {
   SidebarRail,
 } from "components/ui/sidebar";
 import Link from "next/link";
-import {
-  Banknote,
-  Briefcase,
-  CandlestickChart,
-  ChevronDown,
-  HandCoins,
-} from "lucide-react";
+import { ChevronDown, Wallet } from "lucide-react";
 import { cn } from "lib/utils";
 import { usePathname } from "next/navigation";
 import { useCategories } from "hooks/use-categories";
@@ -31,6 +25,8 @@ import {
   CollapsibleTrigger,
 } from "components/ui/collapsible";
 import CategoryLoader from "components/loader/category";
+import { dashboardLinks } from "constants/links";
+import { useWallets } from "hooks/use-wallets";
 
 type CategoryItem = {
   id: string;
@@ -45,36 +41,23 @@ type Categories = {
   [key: string]: SubCategories;
 };
 
-const dashboardLinks = [
-  {
-    name: "Overview",
-    href: "/",
-    Icon: HandCoins,
-  },
-  {
-    name: "Income",
-    href: "/incomes",
-    Icon: Briefcase,
-  },
-  {
-    name: "Expenses",
-    href: "/expenses",
-    Icon: Banknote,
-  },
-  {
-    name: "Investments",
-    href: "/investments",
-    Icon: CandlestickChart,
-  },
-];
-
 export default function Component() {
   const pathname = usePathname();
-  const { categories, isLoading, isError } = useCategories() as {
+  const {
+    categories,
+    isLoading: isCategoryLoading,
+    isError: isCategoryError,
+  } = useCategories() as {
     categories: Categories | undefined;
     isLoading: boolean;
     isError: boolean;
   };
+  const {
+    wallets,
+    isLoading: isWalletLoading,
+    isError: isWalletError,
+  } = useWallets();
+
   const [openCategories, setOpenCategories] = useState<string[]>([]);
 
   const toggleCategory = (categoryType: string) => {
@@ -87,7 +70,7 @@ export default function Component() {
 
   return (
     <SidebarComponent>
-      <SidebarHeader className="relative p-4">
+      <SidebarHeader className="relative">
         <Link
           href="/"
           className="flex items-center gap-2 font-bold justify-center text-2xl"
@@ -120,10 +103,58 @@ export default function Component() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarGroupLabel className="pl-4">Wallets</SidebarGroupLabel>
+        <SidebarGroup className="mb-4">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {isWalletLoading ? (
+                <SidebarMenuItem>
+                  <SidebarMenuButton disabled>
+                    Loading wallets...
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ) : isWalletError ? (
+                <SidebarMenuItem>
+                  <SidebarMenuButton disabled>
+                    Error loading wallets
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ) : wallets && wallets.length > 0 ? (
+                wallets.map((wallet) => (
+                  <SidebarMenuItem key={wallet.id}>
+                    <SidebarMenuButton asChild>
+                      <Link
+                        href={`/wallets/${wallet.id}`}
+                        className={cn(
+                          "flex items-center justify-between w-full rounded-md p-2 text-sm",
+                          pathname === `/wallets/${wallet.id}` &&
+                            "bg-primary text-sidebar-accent-foreground"
+                        )}
+                      >
+                        <span className="flex items-center gap-2">
+                          <Wallet className="h-4 w-4" />
+                          {wallet.name}
+                        </span>
+                        <span>{wallet.currency}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))
+              ) : (
+                <SidebarMenuItem>
+                  <SidebarMenuButton disabled>
+                    No wallets found
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
         <SidebarGroupLabel className="pl-4">Categories</SidebarGroupLabel>
-        {isLoading ? (
+        {isCategoryLoading ? (
           <CategoryLoader />
-        ) : isError ? (
+        ) : isCategoryError ? (
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarGroupLabel>Error loading categories</SidebarGroupLabel>
@@ -131,7 +162,7 @@ export default function Component() {
           </SidebarGroup>
         ) : categories ? (
           Object.entries(categories).map(([categoryType, subCategories]) => (
-            <SidebarGroup className="p-0" key={categoryType}>
+            <SidebarGroup className="px-2 py-0" key={categoryType}>
               <SidebarGroupContent>
                 <Collapsible
                   open={openCategories.includes(categoryType)}

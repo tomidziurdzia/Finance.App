@@ -8,7 +8,7 @@ import DataTableFilterOptions from "./data-table-filter-options";
 import DataTableViewOptions from "./data-table-view-options";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Wallets } from "interfaces/walletInterface";
+import { Wallet } from "interfaces/walletInterface";
 import { Category } from "interfaces/categoryInterface";
 
 interface DataTableToolbarProps<TData> {
@@ -23,7 +23,7 @@ interface DataTableToolbarProps<TData> {
     onFilter?: (filterData: any) => void;
   };
   categories: Category[];
-  wallets?: Wallets;
+  wallets?: Wallet[];
 }
 
 export default function DataTableToolbar<TData>({
@@ -74,7 +74,7 @@ export default function DataTableToolbar<TData>({
             column={getTypedColumn("walletName")}
             title="Wallet"
             onFilter={filter.onFilter}
-            options={wallets?.wallets}
+            options={wallets}
           />
         )}
         {isFiltered && (
