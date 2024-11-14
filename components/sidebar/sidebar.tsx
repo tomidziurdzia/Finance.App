@@ -24,9 +24,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "components/ui/collapsible";
-import CategoryLoader from "components/loader/category";
 import { dashboardLinks } from "constants/links";
 import { useWallets } from "hooks/use-wallets";
+import SidebarLoader from "components/loader/sidebar";
 
 type CategoryItem = {
   id: string;
@@ -108,11 +108,7 @@ export default function Component() {
           <SidebarGroupContent>
             <SidebarMenu>
               {isWalletLoading ? (
-                <SidebarMenuItem>
-                  <SidebarMenuButton disabled>
-                    Loading wallets...
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <SidebarLoader />
               ) : isWalletError ? (
                 <SidebarMenuItem>
                   <SidebarMenuButton disabled>
@@ -153,7 +149,7 @@ export default function Component() {
 
         <SidebarGroupLabel className="pl-4">Categories</SidebarGroupLabel>
         {isCategoryLoading ? (
-          <CategoryLoader />
+          <SidebarLoader />
         ) : isCategoryError ? (
           <SidebarGroup>
             <SidebarGroupContent>

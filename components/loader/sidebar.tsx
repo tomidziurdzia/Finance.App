@@ -13,7 +13,7 @@ interface SidebarCategoryLoaderProps {
   itemsPerGroup?: number;
 }
 
-export default function CategoryLoader({
+export default function SidebarLoader({
   groups = 1,
   itemsPerGroup = 4,
 }: SidebarCategoryLoaderProps) {
