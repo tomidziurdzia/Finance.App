@@ -1,4 +1,4 @@
-import { Overview } from "interfaces/transactionInterface";
+import { Transaction } from "interfaces/transactionInterface";
 import { apiUrls } from "lib/apiUrls";
 import fetchWithAuth from "lib/fetchWithAuth";
 import { format, parse, isValid } from "date-fns";
@@ -13,7 +13,7 @@ const formatDate = (date: string): string => {
 export async function getOverviews(params: {
   startDate?: string;
   endDate?: string;
-}): Promise<Overview[]> {
+}): Promise<Transaction[]> {
   const { startDate, endDate } = params;
 
   const startDateFormatted = startDate ? formatDate(startDate) : "";
@@ -30,7 +30,7 @@ export async function getOverviews(params: {
 
   try {
     const response = await fetchWithAuth(url);
-    return response as Overview[];
+    return response as Transaction[];
   } catch (error) {
     console.error("Error fetching overviews:", error);
     throw error;
