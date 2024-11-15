@@ -13,7 +13,7 @@ import {
   Wallet2,
 } from "lucide-react";
 
-export default function Summary() {
+export default function OverviewsSummary() {
   const { user } = useUser();
   const { data, loading } = useOverview();
 
@@ -36,8 +36,8 @@ export default function Summary() {
   const totalBalance = totalAvailable + totalInvestment;
 
   return (
-    <>
-      <h2 className="mb-4 font-semibold dark:text-white">Summary</h2>
+    <div>
+      <h2 className="mb-2 font-semibold dark:text-white">Balance Summary</h2>
       {loading ? (
         <CardLoader cards={5} />
       ) : (
@@ -101,6 +101,6 @@ export default function Summary() {
           />
         </div>
       )}
-    </>
+    </div>
   );
 }
