@@ -5,15 +5,22 @@ import { format } from "date-fns";
 import useSWR, { KeyedMutator } from "swr";
 import { dateFormat } from "constants/date";
 import { useDate } from "./datepicker-provider";
-import { Expense, Income, Investment } from "interfaces/transactionInterface";
+import {
+  Expense,
+  Income,
+  Investment,
+  Transaction,
+} from "interfaces/transactionInterface";
 import { getIncomes } from "app/actions/income";
 import { getExpenses } from "app/actions/expense";
 import { getInvestments } from "app/actions/investment";
+import { getOverviews } from "app/actions/overviews";
 
 interface OverviewData {
   expenses: Expense[];
   incomes: Income[];
   investments: Investment[];
+  overviews: Transaction[];
 }
 
 interface OverviewContextType {
@@ -23,6 +30,7 @@ interface OverviewContextType {
     mutateExpenses: KeyedMutator<Expense[]>;
     mutateIncome: KeyedMutator<Income[]>;
     mutateInvestments: KeyedMutator<Investment[]>;
+    mutateOverviews: KeyedMutator<Transaction[]>;
   };
 }
 
@@ -56,7 +64,19 @@ const useOverviewData = (
     getInvestments({ startDate, endDate })
   );
 
-  const loading = isExpenseLoading || isInvestmentsLoading || isIncomeLoading;
+  const {
+    data: overviewsData = [],
+    isLoading: isOverviewsLoading,
+    mutate: mutateOverviews,
+  } = useSWR<Transaction[]>(["overviews", startDate, endDate], () =>
+    getOverviews({ startDate, endDate })
+  );
+
+  const loading =
+    isExpenseLoading ||
+    isInvestmentsLoading ||
+    isIncomeLoading ||
+    isOverviewsLoading;
 
   return {
     loading,
@@ -64,11 +84,13 @@ const useOverviewData = (
       expenses: expensesData,
       investments: investmentsData,
       incomes: incomeData,
+      overviews: overviewsData,
     },
     mutate: {
       mutateExpenses,
       mutateIncome,
       mutateInvestments,
+      mutateOverviews,
     },
   };
 };

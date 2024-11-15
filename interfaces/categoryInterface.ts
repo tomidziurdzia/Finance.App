@@ -1,9 +1,9 @@
 export interface Category {
   id: string;
   name: string;
-  description?: string;
   type: CategoryType;
   parentType: string;
+  total: number;
 }
 
 export interface Categories {
