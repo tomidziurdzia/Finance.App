@@ -7,6 +7,7 @@ interface Categories {
   expense: { [parentType: string]: Category[] };
   investment: { [parentType: string]: Category[] };
   transfer: { [parentType: string]: Category[] };
+  other: { [parentType: string]: Category[] };
 }
 
 interface CategoriesTotal {
@@ -14,6 +15,7 @@ interface CategoriesTotal {
   expense: Category[];
   investment: Category[];
   transfer: Category[];
+  other: Category[];
 }
 
 export function useCategories() {
@@ -42,7 +44,13 @@ export function useCategories() {
 
       return acc;
     },
-    { income: {}, expense: {}, investment: {}, transfer: {} } as Categories
+    {
+      income: {},
+      expense: {},
+      investment: {},
+      transfer: {},
+      other: {},
+    } as Categories
   );
 
   const categoriesTotal = data?.reduce(
@@ -65,7 +73,13 @@ export function useCategories() {
 
       return acc;
     },
-    { income: [], expense: [], investment: [], transfer: [] } as CategoriesTotal
+    {
+      income: [],
+      expense: [],
+      investment: [],
+      transfer: [],
+      other: [],
+    } as CategoriesTotal
   );
 
   return {

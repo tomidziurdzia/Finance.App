@@ -82,6 +82,13 @@ export default function AddInvestment({
       }));
     }
 
+    if (categories.other && categories.other.Others) {
+      result.other = categories.other.Others.map((item) => ({
+        ...item,
+        parentType: "Other",
+      }));
+    }
+
     return result;
   }, [categories]);
 
@@ -276,7 +283,7 @@ export default function AddInvestment({
                 </option>
                 {wallets?.map((wallet) => (
                   <option key={wallet.id} value={wallet.id}>
-                    {wallet.name}
+                    {wallet.name} {wallet.currency}
                   </option>
                 ))}
               </select>

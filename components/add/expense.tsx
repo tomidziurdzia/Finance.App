@@ -80,6 +80,13 @@ export default function AddExpense({
       }));
     }
 
+    if (categories.other && categories.other.Others) {
+      result.other = categories.other.Others.map((item) => ({
+        ...item,
+        parentType: "Other",
+      }));
+    }
+
     return result;
   }, [categories]);
 
@@ -279,7 +286,7 @@ export default function AddExpense({
                 </option>
                 {wallets?.map((wallet) => (
                   <option key={wallet.id} value={wallet.id}>
-                    {wallet.name}
+                    {wallet.name} {wallet.currency}
                   </option>
                 ))}
               </select>

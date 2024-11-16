@@ -1,45 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import textFilter from "text-filter";
+
 export const lookup = ({
   data,
   name,
-  fields = ["name", "description", "categoryName"],
+  fields = ["name"],
 }: {
-  data: any[];
-  name: {
-    name: string;
-  };
+  data: any;
+  name: string;
   fields?: string[];
-}): any[] => {
-  if (!data || data.length === 0) {
-    return [];
-  }
-
-  const filter = (item: any) => {
-    const searchTerm = name.name?.toLowerCase();
-    return fields.some((field) => {
-      const value = item[field];
-      return (
-        typeof value === "string" && value.toLowerCase().includes(searchTerm)
-      );
-    });
-  };
-
-  const result = data.filter(filter);
-
-  if (result.length) {
-    const uniqueResults = Object.values(
+}) => {
+  const result = data.filter(textFilter({ query: name, fields }));
+  if (result.length)
+    return Object.values(
       result.reduce((acc: any, datum: any) => {
-        const itemName =
-          datum.name?.toLowerCase() || datum.categoryName?.toLowerCase();
-        if (itemName && !acc[itemName]) {
-          acc[itemName] = datum;
+        const name = datum?.name?.toLowerCase();
+        if (!acc[name]) {
+          acc[name] = datum;
         }
         return acc;
       }, {})
     ).slice(0, 3);
-
-    return uniqueResults;
-  }
-
-  return [];
+  return result;
 };
