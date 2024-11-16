@@ -53,7 +53,7 @@ export default function InvestmentTable() {
   }, []);
 
   const onLookup = useCallback(
-    (name: { name: string }) => lookup({ data, name }),
+    (name: string) => lookup({ data, name }),
     [data]
   );
 
