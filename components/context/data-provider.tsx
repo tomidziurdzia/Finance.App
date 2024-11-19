@@ -72,8 +72,6 @@ export const DataContextProvider = (props: DataContextProviderProps) => {
     [data, isLoading, filter, mutate, onFilter]
   );
 
-  console.log(data);
-
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 };
 

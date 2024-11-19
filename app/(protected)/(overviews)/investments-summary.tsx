@@ -12,7 +12,7 @@ export default function InvestmentsSummary() {
   const { user } = useUser();
   const { loading } = useOverview();
   const { categoriesTotal } = useCategories();
-  const topInvestments = categoriesTotal?.income?.slice(0, 5) || [];
+  const topInvestments = categoriesTotal?.investment?.slice(0, 5) || [];
 
   return (
     <div>
