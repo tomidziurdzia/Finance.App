@@ -13,8 +13,6 @@ export default function WalletsSummary() {
   const { loading } = useOverview();
   const { wallets } = useWallets();
 
-  console.log(wallets);
-
   return (
     <div>
       <h2 className="mb-2 font-semibold dark:text-white">Wallets Summary</h2>
