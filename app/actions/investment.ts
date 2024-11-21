@@ -1,7 +1,11 @@
-import { Investment, NewTransaction } from "interfaces/transactionInterface";
 import { apiUrls } from "lib/apiUrls";
 import fetchWithAuth from "lib/fetchWithAuth";
 import { format, parse, isValid } from "date-fns";
+import {
+  Investment,
+  InvestmentsDto,
+  NewTransaction,
+} from "interfaces/interfaces";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -13,7 +17,7 @@ const formatDate = (date: string): string => {
 export async function getInvestments(params: {
   startDate?: string;
   endDate?: string;
-}): Promise<Investment[]> {
+}): Promise<InvestmentsDto> {
   const { startDate, endDate } = params;
 
   const startDateFormatted = startDate ? formatDate(startDate) : "";
@@ -30,23 +34,31 @@ export async function getInvestments(params: {
 
   try {
     const response = await fetchWithAuth(url);
-    return response as Investment[];
+    return response as InvestmentsDto;
   } catch (error) {
     console.error("Error fetching investments:", error);
-    throw error;
+    throw new Error("Failed to fetch investments. Please try again later.");
   }
 }
 
 export async function createInvestment(
   data: NewTransaction
 ): Promise<Investment> {
-  const investment = await fetchWithAuth(
-    `${API_URL}${apiUrls.investments.create}`,
-    {
-      method: "POST",
-      body: JSON.stringify(data),
-    }
-  );
+  try {
+    const response = await fetchWithAuth(
+      `${API_URL}${apiUrls.investments.create}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
 
-  return investment;
+    return response as Investment;
+  } catch (error) {
+    console.error("Error creating investment:", error);
+    throw new Error("Failed to create investment. Please try again later.");
+  }
 }

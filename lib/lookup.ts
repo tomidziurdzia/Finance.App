@@ -10,7 +10,7 @@ export const lookup = ({
   name: string;
   fields?: string[];
 }) => {
-  const result = data.filter(textFilter({ query: name, fields }));
+  const result = data.data.filter(textFilter({ query: name, fields }));
   if (result.length)
     return Object.values(
       result.reduce((acc: any, datum: any) => {

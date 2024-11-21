@@ -63,13 +63,4 @@ export const apiUrls = {
     putById: (id: string) => `/categories/${id}`,
     deleteById: (id: string) => `/categories/${id}`,
   },
-  overviews: {
-    getOverviews: ({
-      startDate,
-      endDate,
-    }: {
-      startDate: string;
-      endDate: string;
-    }) => `/overviews?from=${startDate}&to=${endDate}`,
-  },
 };
