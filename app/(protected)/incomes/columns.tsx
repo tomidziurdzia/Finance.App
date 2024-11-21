@@ -5,9 +5,9 @@ import { Button } from "components/ui/button";
 import { formatCurrency, formatDate } from "lib/formatter";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pencil, Trash2 } from "lucide-react";
-import { TransactionBase } from "interfaces/interfaces";
+import { Transaction } from "interfaces/interfaces";
 
-export const columns: ColumnDef<TransactionBase>[] = [
+export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "date",
     header: ({ column }) => (
