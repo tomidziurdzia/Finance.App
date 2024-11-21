@@ -5,100 +5,81 @@ import { apiUrls } from "lib/apiUrls";
 import fetchWithAuth from "lib/fetchWithAuth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-const CACHE_EXPIRATION = 5 * 60 * 1000;
-
-interface CacheItem<T> {
-  data: T;
-  timestamp: number;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const cache = new Map<string, CacheItem<any>>();
-
-function getCachedData<T>(key: string): T | null {
-  const cachedItem = cache.get(key);
-  if (cachedItem && Date.now() - cachedItem.timestamp < CACHE_EXPIRATION) {
-    return cachedItem.data;
-  } else if (cachedItem) {
-    cache.delete(key);
-  }
-  return null;
-}
-
-function setCachedData<T>(key: string, data: T): void {
-  cache.set(key, {
-    data,
-    timestamp: Date.now(),
-  });
-}
 
 export async function getAllCategories(): Promise<Category[]> {
-  const cacheKey = "allCategories";
-  const cachedCategories = getCachedData<Category[]>(cacheKey);
-
-  if (cachedCategories) {
-    return cachedCategories;
+  try {
+    const response = await fetchWithAuth(
+      `${API_URL}${apiUrls.categories.getAll}`
+    );
+    return response as Category[];
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    throw new Error("Failed to fetch categories. Please try again later.");
   }
-
-  const categories = await fetchWithAuth(
-    `${API_URL}${apiUrls.categories.getAll}`
-  );
-  setCachedData(cacheKey, categories);
-  return categories;
 }
 
 export async function getCategoryById(id: string): Promise<Category> {
-  const cacheKey = `category_${id}`;
-  const cachedCategory = getCachedData<Category>(cacheKey);
-
-  if (cachedCategory) {
-    return cachedCategory;
+  try {
+    const response = await fetchWithAuth(
+      `${API_URL}${apiUrls.categories.getById(id)}`
+    );
+    return response as Category;
+  } catch (error) {
+    console.error(`Error fetching category with ID ${id}:`, error);
+    throw new Error("Failed to fetch category. Please try again later.");
   }
-
-  const category = await fetchWithAuth(
-    `${API_URL}${apiUrls.categories.getById(id)}`
-  );
-  setCachedData(cacheKey, category);
-  return category;
 }
 
 export async function createCategory(
   category: Omit<Category, "id">
 ): Promise<Category> {
-  const newCategory = await fetchWithAuth(
-    `${API_URL}${apiUrls.categories.create}`,
-    {
-      method: "POST",
-      body: JSON.stringify(category),
-    }
-  );
-  invalidateCategoryCache();
-  return newCategory;
+  try {
+    const response = await fetchWithAuth(
+      `${API_URL}${apiUrls.categories.create}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(category),
+      }
+    );
+    return response as Category;
+  } catch (error) {
+    console.error("Error creating category:", error);
+    throw new Error("Failed to create category. Please try again later.");
+  }
 }
 
 export async function updateCategory(
   id: string,
   category: Partial<Category>
 ): Promise<Category> {
-  const updatedCategory = await fetchWithAuth(
-    `${API_URL}${apiUrls.categories.putById(id)}`,
-    {
-      method: "PUT",
-      body: JSON.stringify(category),
-    }
-  );
-  setCachedData(`category_${id}`, updatedCategory);
-  return updatedCategory;
+  try {
+    const response = await fetchWithAuth(
+      `${API_URL}${apiUrls.categories.putById(id)}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(category),
+      }
+    );
+    return response as Category;
+  } catch (error) {
+    console.error(`Error updating category with ID ${id}:`, error);
+    throw new Error("Failed to update category. Please try again later.");
+  }
 }
 
 export async function deleteCategory(id: string): Promise<void> {
-  await fetchWithAuth(`${API_URL}${apiUrls.categories.deleteById(id)}`, {
-    method: "DELETE",
-  });
-  cache.delete(`category_${id}`);
-  invalidateCategoryCache();
-}
-
-function invalidateCategoryCache() {
-  cache.delete("allCategories");
+  try {
+    await fetchWithAuth(`${API_URL}${apiUrls.categories.deleteById(id)}`, {
+      method: "DELETE",
+    });
+  } catch (error) {
+    console.error(`Error deleting category with ID ${id}:`, error);
+    throw new Error("Failed to delete category. Please try again later.");
+  }
 }
