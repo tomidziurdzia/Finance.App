@@ -1,7 +1,7 @@
-import { Expense, NewTransaction } from "interfaces/transactionInterface";
 import { apiUrls } from "lib/apiUrls";
 import fetchWithAuth from "lib/fetchWithAuth";
 import { format, parse, isValid } from "date-fns";
+import { Expense, ExpensesDto, NewTransaction } from "interfaces/interfaces";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -13,7 +13,7 @@ const formatDate = (date: string): string => {
 export async function getExpenses(params: {
   startDate?: string;
   endDate?: string;
-}): Promise<Expense[]> {
+}): Promise<ExpensesDto> {
   const { startDate, endDate } = params;
 
   const startDateFormatted = startDate ? formatDate(startDate) : "";
@@ -30,18 +30,29 @@ export async function getExpenses(params: {
 
   try {
     const response = await fetchWithAuth(url);
-    return response as Expense[];
+    return response as ExpensesDto;
   } catch (error) {
     console.error("Error fetching expenses:", error);
-    throw error;
+    throw new Error("Failed to fetch expenses. Please try again later.");
   }
 }
 
 export async function createExpense(data: NewTransaction): Promise<Expense> {
-  const expense = await fetchWithAuth(`${API_URL}${apiUrls.expenses.create}`, {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
+  try {
+    const response = await fetchWithAuth(
+      `${API_URL}${apiUrls.expenses.create}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
 
-  return expense;
+    return response as Expense;
+  } catch (error) {
+    console.error("Error creating expense:", error);
+    throw new Error("Failed to create expense. Please try again later.");
+  }
 }

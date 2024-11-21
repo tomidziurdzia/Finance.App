@@ -10,11 +10,11 @@ import {
 import useSWR from "swr";
 import { views } from "constants/table";
 import { getApiUrl } from "constants/url";
-import { Transaction } from "interfaces/transactionInterface";
 import { useCategories } from "hooks/use-categories";
+import { TransactionsDto } from "interfaces/interfaces";
 
 interface DataContextType {
-  data: Transaction[];
+  data: TransactionsDto;
   loading: boolean;
   filter: {
     name: string;
@@ -50,11 +50,13 @@ export const DataContextProvider = (props: DataContextProviderProps) => {
     .map((name) => uniqueCategoriesMap.get(name)?.categoryId)
     .filter((id): id is string => id !== undefined);
 
+  const defaultData: TransactionsDto = { data: [], total: 0 };
+
   const {
-    data = [],
+    data = defaultData,
     mutate,
     isLoading,
-  } = useSWR<Transaction[]>(
+  } = useSWR<TransactionsDto>(
     getApiUrl(filter, name, selectedCategoryIds, isNotRange)
   );
 

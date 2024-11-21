@@ -17,20 +17,11 @@ export default function OverviewsSummary() {
   const { user } = useUser();
   const { data, loading } = useOverview();
 
-  const totalIncome = data.incomes.reduce(
-    (acc: number, { amount }) => Number(amount) + acc,
-    0
-  );
+  const totalIncome = data.incomes?.total || 0;
 
-  const totalExpense = data.expenses.reduce(
-    (acc: number, { amount }) => Number(amount) + acc,
-    0
-  );
+  const totalExpense = data.expenses?.total || 0;
 
-  const totalInvestment = data.investments.reduce(
-    (acc: number, { amount }) => Number(amount) + acc,
-    0
-  );
+  const totalInvestment = data.investments?.total || 0;
 
   const totalAvailable = totalIncome - totalExpense - totalInvestment;
   const totalBalance = totalAvailable + totalInvestment;

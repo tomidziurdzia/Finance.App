@@ -4,7 +4,6 @@ import SummaryCard from "components/card/summary-card";
 import { useUser } from "components/context/auth-provider";
 import { useData } from "components/context/data-provider";
 import CardLoader from "components/loader/card";
-import { Transaction } from "interfaces/transactionInterface";
 import { formatCurrency } from "lib/formatter";
 import { Banknote } from "lucide-react";
 
@@ -12,10 +11,7 @@ export default function ExpenseSummary() {
   const { user } = useUser();
   const { data, loading } = useData();
 
-  const totalAmount = data.reduce(
-    (acc: number, transaction: Transaction) => acc + transaction.amount,
-    0
-  );
+  const totalAmount = data?.total || 0;
 
   return (
     <>

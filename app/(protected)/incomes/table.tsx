@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { columns } from "./columns";
 import { useUser } from "components/context/auth-provider";
 import messages from "constants/messages";
-import { Transaction } from "interfaces/transactionInterface";
 import { lookup } from "lib/lookup";
 import DataTable from "components/table/data-table";
 import Add from "components/add-button";
@@ -13,6 +12,7 @@ import { useCategories } from "hooks/use-categories";
 import { useData } from "components/context/data-provider";
 import { useWallets } from "hooks/use-wallets";
 import { Category } from "interfaces/categoryInterface";
+import { Transaction } from "interfaces/interfaces";
 
 export default function IncomeTable() {
   const [selected, setSelected] = useState({});
@@ -63,7 +63,7 @@ export default function IncomeTable() {
         options={{ user, onDelete, onEdit }}
         filter={filter}
         columns={columns}
-        data={data}
+        data={data.data}
         loading={loading}
         filename="Expense"
         categories={filteredCategories as unknown as Category[]}

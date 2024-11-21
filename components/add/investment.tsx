@@ -21,8 +21,8 @@ import {
   DialogTitle,
 } from "components/ui/dialog";
 import { useWallets } from "hooks/use-wallets";
-import { NewTransaction } from "interfaces/transactionInterface";
 import { createInvestment } from "app/actions/investment";
+import { NewTransaction } from "interfaces/interfaces";
 
 interface AddInvestment {
   show: boolean;

@@ -5,32 +5,25 @@ import { format } from "date-fns";
 import useSWR, { KeyedMutator } from "swr";
 import { dateFormat } from "constants/date";
 import { useDate } from "./datepicker-provider";
-import {
-  Expense,
-  Income,
-  Investment,
-  Transaction,
-} from "interfaces/transactionInterface";
+
 import { getIncomes } from "app/actions/income";
 import { getExpenses } from "app/actions/expense";
 import { getInvestments } from "app/actions/investment";
-import { getOverviews } from "app/actions/overviews";
+import { ExpensesDto, IncomesDto, InvestmentsDto } from "interfaces/interfaces";
 
 interface OverviewData {
-  expenses: Expense[];
-  incomes: Income[];
-  investments: Investment[];
-  overviews: Transaction[];
+  expenses: ExpensesDto | null;
+  incomes: IncomesDto | null;
+  investments: InvestmentsDto | null;
 }
 
 interface OverviewContextType {
   loading: boolean;
   data: OverviewData;
   mutate: {
-    mutateExpenses: KeyedMutator<Expense[]>;
-    mutateIncome: KeyedMutator<Income[]>;
-    mutateInvestments: KeyedMutator<Investment[]>;
-    mutateOverviews: KeyedMutator<Transaction[]>;
+    mutateExpenses: KeyedMutator<ExpensesDto>;
+    mutateIncome: KeyedMutator<IncomesDto>;
+    mutateInvestments: KeyedMutator<InvestmentsDto>;
   };
 }
 
@@ -41,56 +34,42 @@ const useOverviewData = (
   endDate: string
 ): OverviewContextType => {
   const {
-    data: incomeData = [],
+    data: incomeData,
     isLoading: isIncomeLoading,
     mutate: mutateIncome,
-  } = useSWR<Income[]>(["incomes", startDate, endDate], () =>
+  } = useSWR<IncomesDto>(["incomes", startDate, endDate], () =>
     getIncomes({ startDate, endDate })
   );
 
   const {
-    data: expensesData = [],
+    data: expensesData,
     isLoading: isExpenseLoading,
     mutate: mutateExpenses,
-  } = useSWR<Expense[]>(["expenses", startDate, endDate], () =>
+  } = useSWR<ExpensesDto>(["expenses", startDate, endDate], () =>
     getExpenses({ startDate, endDate })
   );
 
   const {
-    data: investmentsData = [],
+    data: investmentsData,
     isLoading: isInvestmentsLoading,
     mutate: mutateInvestments,
-  } = useSWR<Investment[]>(["investments", startDate, endDate], () =>
+  } = useSWR<InvestmentsDto>(["investments", startDate, endDate], () =>
     getInvestments({ startDate, endDate })
   );
 
-  const {
-    data: overviewsData = [],
-    isLoading: isOverviewsLoading,
-    mutate: mutateOverviews,
-  } = useSWR<Transaction[]>(["overviews", startDate, endDate], () =>
-    getOverviews({ startDate, endDate })
-  );
-
-  const loading =
-    isExpenseLoading ||
-    isInvestmentsLoading ||
-    isIncomeLoading ||
-    isOverviewsLoading;
+  const loading = isExpenseLoading || isInvestmentsLoading || isIncomeLoading;
 
   return {
     loading,
     data: {
-      expenses: expensesData,
-      investments: investmentsData,
-      incomes: incomeData,
-      overviews: overviewsData,
+      expenses: expensesData || null,
+      incomes: incomeData || null,
+      investments: investmentsData || null,
     },
     mutate: {
       mutateExpenses,
       mutateIncome,
       mutateInvestments,
-      mutateOverviews,
     },
   };
 };
