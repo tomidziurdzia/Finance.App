@@ -64,7 +64,6 @@ export default function AddExpense({
 
   const filteredCategories = useMemo(() => {
     if (!categories) return {};
-    console.log(categories);
 
     const result: { [key: string]: CategoryItem[] } = {};
 
