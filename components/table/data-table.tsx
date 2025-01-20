@@ -25,7 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Wallet } from "interfaces/walletInterface";
+import { TransactionWallet, Wallet } from "interfaces/walletInterface";
 import { Category } from "interfaces/categoryInterface";
 import { Transaction } from "interfaces/interfaces";
 
@@ -41,7 +41,7 @@ declare module "@tanstack/react-table" {
 }
 
 type DataTableProps = {
-  data: Array<Transaction>;
+  data: Array<Transaction> | Array<TransactionWallet>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: Array<any>;
   loading: boolean;
@@ -93,6 +93,8 @@ export default function DataTable(props: DataTableProps) {
     meta: options,
   });
 
+  console.log(data);
+
   return (
     <div className="mb-8">
       <DataTableToolbar
@@ -103,6 +105,7 @@ export default function DataTable(props: DataTableProps) {
         table={table}
         hideViewOptions={hideViewOptions}
       />
+      {/*
       <div className="rounded-md border border-border">
         <Table>
           <TableHeader className="bg-muted">
@@ -155,7 +158,7 @@ export default function DataTable(props: DataTableProps) {
             )}
           </TableBody>
         </Table>
-      </div>
+      </div> */}
     </div>
   );
 }
