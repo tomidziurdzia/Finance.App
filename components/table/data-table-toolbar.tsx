@@ -102,7 +102,7 @@ export default function DataTableToolbar<TData>({
             filter={filter.name}
           />
         )}
-        <DataTableViewOptions table={table} />
+        {/* <DataTableViewOptions table={table} /> */}
       </div>
     </div>
   );
